@@ -1,0 +1,90 @@
+@media (max-width: 1320px) {
+  .workspace-content { padding-inline: 25px; }
+  .topbar { padding-inline: 25px; }
+  .metrics-grid,.order-metrics,.reservation-overview,.customer-metrics,.marketing-metrics,.automation-stats,.experience-metrics,.insight-kpis { grid-template-columns: repeat(2,1fr); }
+  .menu-products { grid-template-columns: repeat(2,1fr); }
+  .quick-card { grid-template-columns: 180px 1fr auto; }
+  .quick-actions { grid-template-columns: 1fr 1fr; }
+  .module-group-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 1120px) {
+  .workspace { margin-left: 0; }
+  .sidebar { width: 270px; transform: translateX(-103%); box-shadow: var(--shadow-lg); transition: transform .26s cubic-bezier(.22,.7,.3,1); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-close,.mobile-menu { display: inline-grid !important; }
+  .sidebar-scrim { position: fixed; z-index: 45; inset: 0; display: block; background: rgba(8,24,15,.42); backdrop-filter: blur(2px); }
+  .topbar { gap: 12px; }.today-copy { min-width: 150px; }.top-search { margin-left: auto; }
+  .overview-grid > .span-8,.overview-grid > .span-7,.overview-grid > .span-5,.overview-grid > .span-4 { grid-column: span 6; }
+  .overview-grid > .revenue-card,.overview-grid > .orders-card { grid-column: span 12; }
+  .quick-card { grid-template-columns: 170px 1fr auto; }
+  .order-board { grid-template-columns: repeat(3,minmax(290px,1fr)); }
+  .reservations-layout { grid-template-columns: 1fr; }
+  .request-inbox { max-height: none; }
+  .reservation-request-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .floor-workspace { grid-template-columns: 1fr 260px; }
+  .customer-main-grid { grid-template-columns: 1fr; }.customer-side-stack { display: grid; grid-template-columns: 1.2fr 1fr 1fr; }.loyalty-program-card { grid-row: span 2; }
+  .campaign-list-card,.feedback-card { grid-column: span 12; }.campaign-spotlight,.review-ai-card { grid-column: span 6; }
+  .automation-grid > * { grid-column: span 6 !important; }
+  .events-card { grid-column: span 12; }.match-alert-card { grid-column: span 5; }.games-library { grid-column: span 7; }.kids-park-card { grid-column: span 12; }
+  .settings-layout { grid-template-columns: 1fr 310px; }
+  .module-group-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 900px) {
+  .workspace-content { padding: 25px 18px 70px; }
+  .topbar { padding: 0 18px; }.today-copy { display: none; }.top-search { width: auto; flex: 1; margin: 0; }.top-search kbd { display: none; }
+  .page-header,.welcome-row { align-items: flex-start; flex-direction: column; }.page-actions,.welcome-actions { width: 100%; justify-content: flex-start; }
+  .page-header { min-height: 0; }.page-header h1,.welcome-row h1 { font-size: 35px; }
+  .metrics-grid { grid-template-columns: repeat(2,1fr); }
+  .overview-grid > .span-8,.overview-grid > .span-7,.overview-grid > .span-5,.overview-grid > .span-4 { grid-column: span 12; }
+  .quick-card { grid-template-columns: 1fr; }.quick-actions { grid-template-columns: repeat(2,1fr); }.quick-card > .icon-button { position: absolute; right: 16px; top: 16px; }
+  .menu-summary-grid { grid-template-columns: 1fr 1fr; }.ai-menu-card { grid-column: 1/-1; }.menu-products { grid-template-columns: repeat(2,1fr); }
+  .floor-summary { grid-template-columns: repeat(4,1fr); }.floor-summary .occupancy-total { grid-column: 1/-1; padding-top: 10px; border-top: 1px solid var(--line); }
+  .floor-workspace { grid-template-columns: 1fr; }.table-inspector { min-height: auto; }.floor-canvas { height: 530px; }
+  .customer-side-stack { grid-template-columns: 1fr 1fr; }.loyalty-program-card { grid-column: 1/-1; grid-row: auto; }
+  .marketing-grid > * { grid-column: span 12; }.campaign-spotlight { min-height: 360px; }
+  .insights-grid > * { grid-column: span 12 !important; }.sales-mix { min-height: 300px; }.mix-legend { max-width: 500px; margin: 0 auto; }
+  .automation-grid > * { grid-column: span 12 !important; }.ai-command-card form,.ai-answer { width: 100%; }.ai-decoration { display: none; }
+  .experience-hero { grid-template-columns: 1fr; }.experience-collage { min-height: 260px; }.experiences-grid > * { grid-column: span 12; }
+  .settings-layout { grid-template-columns: 1fr; }.settings-side-stack { display: grid; grid-template-columns: 1fr 1fr; }.website-preview-card,.payment-summary-card { grid-row: span 2; }.settings-side-stack .domain-card { grid-column: 1/-1; }
+  .service-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .workspace-content { padding: 21px 13px 94px; }
+  .topbar { height: 61px; padding: 0 13px; }.top-search { min-height: 36px; }.top-search span { font-size: 0; }.top-search span::after { content: "Search…"; font-size: 9px; }.top-actions > .icon-button:first-child { display: none; }.preview-button { width: 36px; padding: 0; justify-content: center; }.preview-button span { display: none; }
+  .mobile-bottom-nav { position: fixed; z-index: 38; inset: auto 0 0; height: 70px; padding: 6px 9px max(6px,env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(5,1fr); border-top: 1px solid var(--line); background: color-mix(in srgb,var(--card) 94%,transparent); backdrop-filter: blur(18px); }.mobile-bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--muted); cursor: pointer; background: none; font-size: 6px; font-weight: 800; }.mobile-bottom-nav button.active { color: var(--green); }.mobile-bottom-nav button.active svg { filter: drop-shadow(0 3px 8px color-mix(in srgb,var(--green) 35%,transparent)); }
+  .page-header h1,.welcome-row h1 { font-size: 31px; }.page-actions .button,.welcome-actions .button { flex: 1; }
+  .metrics-grid,.order-metrics,.reservation-overview,.customer-metrics,.marketing-metrics,.automation-stats,.experience-metrics,.insight-kpis { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric-card { min-height: 126px; }.metric-card > div:nth-child(2) > strong { font-size: 17px; }
+  .order-metrics > .card,.reservation-overview > .card,.customer-metrics > .card,.marketing-metrics > .card,.automation-stats > .card,.experience-metrics > .card { min-height: 104px; grid-template-columns: auto 1fr; }.order-metrics .card > :last-child,.reservation-overview .card > :last-child,.customer-metrics .card > :last-child,.marketing-metrics .card > :last-child,.automation-stats .card > :last-child,.experience-metrics .card > :last-child { grid-column: 2; justify-self: start; }
+  .overview-grid { gap: 10px; }.overview-grid > .card { padding: 14px; }.chart-summary { margin-left: 33px; }.chart-summary { align-items: flex-start; flex-direction: column; gap: 6px; }.revenue-chart { padding-left: 29px; }.overview-orders article { grid-template-columns: auto 1fr auto; }.overview-order-meta { display: none; }.quick-actions { grid-template-columns: 1fr; }
+  .orders-toolbar { align-items: flex-start; flex-direction: column; }.orders-toolbar .segmented { max-width: 100%; overflow-x: auto; }.orders-toolbar-right { width: 100%; }.order-board { grid-template-columns: repeat(3,minmax(280px,82vw)); }
+  .menu-summary-grid { grid-template-columns: 1fr; }.ai-menu-card { grid-column: auto; }.menu-toolbar { flex-wrap: wrap; }.menu-search { flex-basis: calc(100% - 50px); }.category-filter { flex: 1; }.menu-category-tabs { gap: 14px; }.menu-products { grid-template-columns: 1fr; }.menu-products.list .menu-product-card { grid-template-columns: 105px 1fr; }
+  .reservation-request-list { grid-template-columns: 1fr; }.week-strip { min-width: 570px; }.calendar-card { overflow-x: auto; }.calendar-head,.calendar-agenda { min-width: 570px; }.reservation-bottom-grid { grid-template-columns: 1fr; }
+  .floor-summary { grid-template-columns: repeat(2,1fr); }.floor-summary > div:nth-child(2) { border: 0; }.zone-tabs { max-width: calc(100vw - 120px); overflow-x: auto; }.floor-canvas { min-width: 680px; }.floor-canvas-card { overflow-x: auto; }.shift-handover { grid-template-columns: auto 1fr; }.shift-handover > button { grid-column: 2; }
+  .segment-grid { grid-template-columns: 1fr 1fr; }.customer-side-stack { grid-template-columns: 1fr; }.customer-directory { overflow-x: auto; }
+  .campaign-table,.customer-table { margin: 0 -1px; }.feedback-card-head { flex-direction: column; }.review-ai-card { grid-template-columns: auto 1fr; }.review-ai-card > button { grid-column: 2; }
+  .insight-kpis > .card { min-height: 105px; }.insight-chart-head { align-items: flex-start; flex-direction: column; }.heatmap-grid { gap: 3px; }
+  .ai-command-card { padding: 18px; }.ai-command-copy { align-items: flex-start; }.large-ai-orb { width: 49px; height: 49px; }.ai-command-copy h2 { font-size: 21px; }.ai-prompts { overflow-x: auto; }.ai-prompts button { white-space: nowrap; }.automation-rule-list article { grid-template-columns: auto 1fr auto; }.automation-rule-list article > .icon-button { display: none; }
+  .experience-hero-copy { padding: 24px 20px; }.experience-hero-copy h2 { font-size: 31px; }.experience-collage { padding: 14px; }.game-covers { grid-template-columns: repeat(2,1fr); }.game-covers article { aspect-ratio: 1; }.kids-park-card { grid-template-columns: 1fr; }.kids-art { min-height: 170px; }
+  .settings-side-stack { grid-template-columns: 1fr; }.website-preview-card,.payment-summary-card { grid-row: auto; }.contact-settings { grid-template-columns: 1fr; }.social-row { grid-template-columns: 1fr; }.social-row > span { margin-top: 4px; }.role-grid { grid-template-columns: 1fr; }.module-group-grid { grid-template-columns: 1fr; }.module-intro { padding: 22px; grid-template-columns: 1fr; }.module-intro > span { display: none; }
+  .detail-panel > header { padding: 19px; }.detail-body { padding: 17px 19px 105px; }
+  .customer-preview { padding-inline: 13px; }.phone-frame { height: calc(100vh - 90px); }
+}
+
+@media (max-width: 500px) {
+  .top-search { display: none; }.top-actions { margin-left: auto; }
+  .metrics-grid { grid-template-columns: 1fr; }.metric-card { min-height: 120px; }
+  .order-metrics,.reservation-overview,.customer-metrics,.marketing-metrics,.automation-stats,.experience-metrics,.insight-kpis { grid-template-columns: 1fr; }
+  .order-metrics > .card,.reservation-overview > .card,.customer-metrics > .card,.marketing-metrics > .card,.automation-stats > .card,.experience-metrics > .card { min-height: 90px; }
+  .overview-orders article { grid-template-columns: auto 1fr auto; }.order-next { width: 28px; padding: 0; font-size: 0; }.order-next svg { margin: auto; }.event-card { grid-template-columns: 40% 60%; }.quick-card { min-height: 0; }
+  .menu-health { grid-template-columns: auto 1fr; }.menu-toolbar > button,.layout-toggle { display: none; }.menu-search { flex-basis: 100%; }
+  .segment-grid { grid-template-columns: 1fr; }.customer-side-stack { display: flex; }.campaign-row,.campaign-table-head { min-width: 650px; }
+  .chart-summary strong,.big-chart-number strong { font-size: 14px; }.chart-legend { flex-wrap: wrap; }.mix-legend { grid-template-columns: 1fr; }
+  .automation-rule-list article { min-height: 90px; }.recommendation-card,.chatbot-card { padding: 14px; }.game-covers article { aspect-ratio: .8; }.experience-collage { grid-template-columns: 1fr 1fr; grid-template-rows: 150px 110px; }.collage-card.football { grid-column: 1/-1; grid-row: auto; }
+  .settings-tabs button { padding: 0 9px; }.brand-editor { align-items: flex-start; flex-direction: column; }.tenant-logo { width: 100%; }.form-grid { grid-template-columns: 1fr; }.span-2 { grid-column: auto; }.theme-options { grid-template-columns: 1fr; }.staff-qr-card { grid-template-columns: 1fr; }.payment-rules > div { grid-template-columns: 90px 1fr; }.provider-list article { grid-template-columns: auto 1fr auto; }.provider-list article > .button { grid-column: 2/-1; justify-self: start; }
+  .qr-create-layout { grid-template-columns: 1fr; }.qr-demo { min-height: 145px; }.modal-layer { padding: 10px; }.modal-card { max-height: calc(100vh - 20px); }
+  .toast { width: calc(100% - 26px); justify-content: center; text-align: center; }
+}
