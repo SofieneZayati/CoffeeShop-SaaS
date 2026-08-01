@@ -36,18 +36,6 @@ export const DEMO_ACCOUNTS = [
     color: "orange",
   },
   {
-    id: "floor",
-    email: "fares@greencoffee.tn",
-    password: "GreenFloor26!",
-    name: "Fares Ben Ali",
-    firstName: "Fares",
-    initials: "FA",
-    role: "floor",
-    roleLabel: "Floor staff",
-    description: "Tables, service, bookings and waiter orders",
-    color: "blue",
-  },
-  {
     id: "customer",
     email: "mariem@greencoffee.tn",
     password: "GreenGuest26!",
@@ -83,12 +71,6 @@ export const ROLE_CONFIG = {
     views: ["orders", "menu"],
     quickActions: [],
     permissions: ["prepare_orders", "toggle_availability", "view_stock"],
-  },
-  floor: {
-    defaultView: "floor",
-    views: ["floor", "orders", "reservations"],
-    quickActions: ["order", "reservation"],
-    permissions: ["serve_orders", "manage_floor", "manage_reservations", "create_waiter_order"],
   },
   customer: {
     defaultView: "customer",

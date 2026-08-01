@@ -9,7 +9,6 @@ import {
   Gift,
   Grid2X2,
   MessageSquareText,
-  MoreHorizontal,
   Plus,
   QrCode,
   ShoppingBag,
@@ -20,7 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 import { previousSeries, revenueSeries } from "../data/demoData";
-import { Avatar, Badge, Button, Card, IconButton, MetricDelta, Progress, SectionTitle } from "../components/ui";
+import { Avatar, Badge, Button, Card, MetricDelta, Progress, SectionTitle } from "../components/ui";
 
 function makeLine(values, width = 620, height = 180, padding = 10) {
   const max = Math.max(...values);
@@ -84,12 +83,14 @@ const quickActions = [
 
 export default function Overview({ orders, tables, reservations, onNavigate, onQuick, onAdvanceOrder, account }) {
   const occupied = tables.filter((table) => ["occupied", "ordering"].includes(table.status)).length;
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   return (
     <div className="view overview-view">
       <section className="welcome-row">
         <div>
           <span className="eyebrow">Your daily pulse</span>
-          <h1>Good morning, {account.firstName}.</h1>
+          <h1>{greeting}, {account.firstName}.</h1>
           <p>The café is flowing nicely. Here’s what deserves your attention.</p>
         </div>
         <div className="welcome-actions">
@@ -186,7 +187,7 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
         </Card>
 
         <Card className="event-card span-4">
-          <div className="event-visual"><span className="event-date"><b>13</b>JUL</span><span className="event-ball">⚽</span><i className="event-line one" /><i className="event-line two" /></div>
+          <div className="event-visual"><span className="event-date"><b>08</b>AUG</span><span className="event-ball">⚽</span><i className="event-line one" /><i className="event-line two" /></div>
           <div className="event-copy"><Badge tone="light">Next big event</Badge><h2>Champions League<br />final night.</h2><p>46 of 60 seats already reserved</p><Progress value={77} tone="lime" label="Event capacity" /><button onClick={() => onNavigate("experiences")}>Manage event <ArrowUpRight size={14} /></button></div>
         </Card>
 
@@ -195,7 +196,6 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
           <div className="quick-actions">
             {quickActions.map(({ id, label, icon: Icon, tone }) => <button key={id} onClick={() => onQuick(id)}><span className={tone}><Icon size={18} /></span><strong>{label}</strong><ChevronRight size={15} /></button>)}
           </div>
-          <IconButton label="More quick actions"><MoreHorizontal size={18} /></IconButton>
         </Card>
       </section>
     </div>

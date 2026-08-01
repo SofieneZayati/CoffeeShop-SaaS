@@ -1,0 +1,56 @@
+.sidebar-location-card,
+.sidebar-support-card {
+  margin: -4px 12px 12px;
+  border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--card) 94%, var(--green-soft));
+  box-shadow: 0 12px 28px rgba(22, 49, 39, 0.08);
+}
+
+.sidebar-location-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.sidebar-location-card > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+}
+
+.sidebar-location-card strong,
+.sidebar-support-card strong {
+  color: var(--ink);
+  font-size: 0.82rem;
+}
+
+.sidebar-location-card small,
+.sidebar-support-card > span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.sidebar-support-card {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+}
+
+.sidebar-support-card button {
+  justify-self: start;
+  margin-top: 3px;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.location-switcher .rotated {
+  transform: rotate(180deg);
+}

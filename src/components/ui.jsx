@@ -3,18 +3,13 @@ import { Check, ChevronRight, LoaderCircle } from "lucide-react";
 export function BrandMark({ compact = false }) {
   return (
     <div className={`brand-lockup${compact ? " compact" : ""}`}>
-      <span className="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 46 46" role="img">
-          <path d="M11 18.5h22v8.2A10.3 10.3 0 0 1 22.7 37h-1.4A10.3 10.3 0 0 1 11 26.7Z" fill="currentColor" />
-          <path d="M33 21h2.7a5.3 5.3 0 0 1 0 10.6h-3.1" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
-          <path d="M17.2 14.4c-2.5-3.5 3.2-4.7 1.1-8M24 14.2c-2.7-3.7 3.2-5.1 1-8.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M9.5 39h28" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
-        </svg>
+      <span className="brand-mark">
+        <img src="/logo.jpg" alt={compact ? "Green Coffee Games" : ""} />
       </span>
       {!compact && (
         <span className="brand-words">
-          <strong>Green Coffee</strong>
-          <small>Shop operating system</small>
+          <strong>Green Coffee Games</strong>
+          <small>Interactive shop OS demo</small>
         </span>
       )}
     </div>

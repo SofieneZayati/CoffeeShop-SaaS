@@ -1,5 +1,7 @@
 # Generated menu image assets
 
+The client-provided Green Coffee Games logo is copied from the feature selector to `public/logo.jpg` and is used in the login, staff shell, customer view, settings preview, favicon, and page metadata.
+
 Six original menu photographs were generated with the built-in image generation tool and saved as optimized 900×900 WebP assets under `public/menu/`.
 
 | Menu item | Project asset |

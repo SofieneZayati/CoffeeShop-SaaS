@@ -23,7 +23,8 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import { BrandMark, IconButton } from "./ui";
+import { Badge, BrandMark, IconButton } from "./ui";
+import "../styles/shell-interactions.css";
 
 export const navigation = [
   {
@@ -61,6 +62,8 @@ export function filterNavigation(allowedViews) {
 
 export function Sidebar({ active, onNavigate, open, onClose, allowedViews, account, onLogout, onSwitchAccount }) {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
   const visibleNavigation = filterNavigation(allowedViews);
   return (
     <>
@@ -70,11 +73,12 @@ export function Sidebar({ active, onNavigate, open, onClose, allowedViews, accou
           <IconButton label="Close navigation" className="sidebar-close" onClick={onClose}><X size={19} /></IconButton>
         </div>
 
-        <button className="location-switcher">
+        <button className="location-switcher" aria-expanded={locationOpen} onClick={() => setLocationOpen((value) => !value)}>
           <span className="location-thumb"><Coffee size={18} /></span>
           <span><strong>Green Coffee Games</strong><small>La Marsa • Open</small></span>
-          <ChevronDown size={15} />
+          <ChevronDown size={15} className={locationOpen ? "rotated" : ""} />
         </button>
+        {locationOpen && <div className="sidebar-location-card" role="status"><span className="location-thumb"><Coffee size={17} /></span><span><strong>La Marsa</strong><small>Current demo location • open until 23:00</small></span><Badge tone="green">Selected</Badge></div>}
 
         <nav className="main-nav" aria-label="Main navigation">
           {visibleNavigation.map((group) => (
@@ -98,7 +102,8 @@ export function Sidebar({ active, onNavigate, open, onClose, allowedViews, accou
         </nav>
 
         <div className="sidebar-foot">
-          <button className="support-link"><LifeBuoy size={17} /><span>Help & support</span></button>
+          {supportOpen && <div className="sidebar-support-card"><strong>Demo help</strong><span>Use the sidebar to change areas. Press Ctrl/⌘ K for quick navigation.</span><button type="button" onClick={() => setSupportOpen(false)}>Got it</button></div>}
+          <button className="support-link" aria-expanded={supportOpen} onClick={() => setSupportOpen((value) => !value)}><LifeBuoy size={17} /><span>Help & support</span></button>
           <div className="sidebar-account-wrap">
             {accountMenuOpen && <div className="sidebar-account-menu">
               <div><span className="user-avatar">{account.initials}<i /></span><span><strong>{account.name}</strong><small>{account.email}</small></span></div>
@@ -125,7 +130,7 @@ export function Topbar({ onOpenNav, onSearch, onNotifications, onPreview, theme,
       <IconButton label="Open navigation" className="mobile-menu" onClick={onOpenNav}><Menu size={20} /></IconButton>
       <div className="today-copy">
         <span>{dateLabel}</span>
-        <strong><i /> Café is open <em>• {account.roleLabel} view</em></strong>
+        <strong><i /> Demo scenario running <em>• {account.roleLabel} view</em></strong>
       </div>
       <button className="top-search" onClick={onSearch}>
         <Search size={17} />
@@ -133,6 +138,7 @@ export function Topbar({ onOpenNav, onSearch, onNotifications, onPreview, theme,
         <kbd>⌘ K</kbd>
       </button>
       <div className="top-actions">
+        <Badge tone="purple">Interactive demo</Badge>
         <IconButton label="Toggle color theme" onClick={onToggleTheme}>{theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}</IconButton>
         <IconButton label="Notifications" className="notification-button" onClick={onNotifications}>
           <Bell size={18} />

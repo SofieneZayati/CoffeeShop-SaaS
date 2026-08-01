@@ -1,6 +1,6 @@
 # Green Coffee OS
 
-A polished, responsive SaaS front-end for running a modern coffee shop. It turns the 86 capabilities from `GreenCoffeeGamesFeatures` into an operational product instead of another proposal/feature-selector screen.
+A polished, responsive front-end concept for running a modern coffee shop. It turns the selectable scope in `GreenCoffeeGamesFeatures` into a coherent staff and customer demo.
 
 ## What is included
 
@@ -8,14 +8,16 @@ A polished, responsive SaaS front-end for running a modern coffee shop. It turns
 - Barista/KDS display mode, order details, guest notes, payments, and receipts
 - Menu manager with categories, product cards, availability, stock, modifiers, allergens, featured products, and AI copy suggestions
 - Reservation inbox, approvals, calendar, guest messages, reminders, cancellations, waitlist, and event bookings
-- Interactive floor map with table sessions, occupancy, secure table QR codes, split/merge controls, and shift notes
+- Interactive floor map with scan-started, 45-minute table sessions, staff acceptance, remote-order safeguards, and shift notes
 - Customer CRM, profiles, preferences, receipt history, loyalty points, rewards wallet, birthdays, referrals, and VIP tiers
 - WhatsApp/email/push campaigns, customer segments, coupons, feedback QR, ratings, and AI review summaries
 - Revenue, order, product, reservation, QR-scan, customer-behaviour, and peak-hour analytics
 - AI operations assistant, recommendations, chatbot, stock forecasts, and configurable automations
 - A dedicated Games / Kids Park / Football Events experience
-- Website studio, public customer menu preview, EN/FR readiness, light/dark themes, payments, staff roles, audit log, backups, deployment, and support modules
-- Demo authentication with protected owner, manager, barista, floor-staff, and customer experiences
+- Website studio, public customer menu preview, light/dark themes, and clearly labelled concepts for payments, staff roles, audit, backups, deployment, and support
+- Demo authentication with focused owner, manager, barista, and customer experiences
+- No-login guest menu at `#table`; scanning a table QR starts the simulated on-site session and customer-submitted orders wait for staff acceptance
+- Served orders remain in history instead of disappearing from shared demo data
 - Six original, optimized menu photographs shared across admin, analytics, login, and customer ordering
 
 See [FEATURE_MAP.md](./FEATURE_MAP.md) for the full source-feature mapping.
@@ -27,12 +29,13 @@ See [FEATURE_MAP.md](./FEATURE_MAP.md) for the full source-feature mapping.
 | Owner — Sofiene | `sofiene@greencoffee.tn` | `GreenOwner26!` | Full platform overview |
 | Manager — Malek | `malek@greencoffee.tn` | `GreenManager26!` | Operations and growth |
 | Barista — Aya | `aya@greencoffee.tn` | `GreenBarista26!` | Barista/KDS order board |
-| Floor staff — Fares | `fares@greencoffee.tn` | `GreenFloor26!` | Floor plan and service |
 | Customer — Mariem | `mariem@greencoffee.tn` | `GreenGuest26!` | Customer menu, orders and rewards |
 
 The login screen can fill any account automatically. See [DEMO_ACCOUNTS.md](./DEMO_ACCOUNTS.md) for the full permission matrix and [IMAGE_ASSETS.md](./IMAGE_ASSETS.md) for generated asset provenance.
 
 ## Run locally
+
+Requires Node.js 20.19+ (or Node.js 22.12+).
 
 ```bash
 npm install
@@ -44,6 +47,7 @@ Open the Vite URL shown in the terminal. Navigation also supports hashes, for ex
 ```text
 http://localhost:5173/#orders
 http://localhost:5173/#floor
+http://localhost:5173/#table
 http://localhost:5173/#experiences
 ```
 
@@ -58,9 +62,11 @@ The deployable output is written to `dist/`.
 
 ## Demo behaviour
 
-This project is a high-fidelity interactive front-end prototype. The signed-in account ID is stored in `sessionStorage`; no password is stored in the session. Shared shop data such as orders, menu availability, reservations, table states, automations, and theme is stored in browser `localStorage` so switching staff accounts feels like one connected café.
+This project is a high-fidelity interactive front-end prototype. The signed-in account ID and the current device's verified table are stored in `sessionStorage`; no password is stored in the session. Shared shop data such as orders, menu availability, reservations, table states, automations, and theme is stored in browser `localStorage` so switching demo actors keeps the same café state.
 
-The bundled login and permissions are demo-only. Real authentication, server-side authorization, tenant isolation, database storage, real-time sockets, email/WhatsApp delivery, payment providers, PDF receipts, uploads, and production AI calls require backend services and provider credentials before a live client launch.
+For the client walkthrough, open the no-account table-ordering entry, start the demo scanner, and scan/select a table. That scan creates the 45-minute device session; the customer can then customize products and send an order for staff acceptance. A manager can enter a waiter order instead when a guest does not scan. Clearing the table revokes its previous device session.
+
+The bundled login, roles, and table-session checks are demo-only. A live release must create opaque table sessions server-side, validate them on every order, require staff acceptance of customer-submitted tickets, and enforce idle/absolute expiry, revocation, rate limits, duplicate-order protection, and an audit trail. Strict remote-order prevention additionally needs a rotating proof or another reliable on-site check; a photographed permanent QR alone cannot prove presence. Real authentication, authorization, tenant isolation, database storage, real-time sockets, messaging, payment providers, receipts, uploads, and production AI also require backend services and provider credentials.
 
 ## Stack
 

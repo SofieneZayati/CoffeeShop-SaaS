@@ -1,0 +1,78 @@
+.notification-activity {
+  display: grid;
+}
+
+.notification-activity article {
+  min-height: 74px;
+  padding: 13px 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 11px;
+  border-bottom: 1px solid var(--line);
+}
+
+.notification-activity article > span:last-child {
+  display: grid;
+  gap: 4px;
+}
+
+.notification-activity strong { font-size: 0.78rem; }
+.notification-activity small,
+.activity-caption { color: var(--muted); font-size: 0.68rem; line-height: 1.45; }
+
+.preview-assistant,
+.preview-cart-sheet {
+  position: absolute;
+  z-index: 12;
+  left: 12px;
+  right: 12px;
+  border: 1px solid rgba(29, 78, 53, 0.15);
+  border-radius: 16px;
+  color: #1b3327;
+  background: #fffefa;
+  box-shadow: 0 18px 46px rgba(17, 49, 34, 0.22);
+}
+
+.preview-assistant { bottom: 76px; padding: 13px; }
+.preview-cart-sheet { bottom: 12px; padding: 14px; }
+
+.preview-assistant header,
+.preview-cart-sheet header,
+.preview-cart-sheet > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.preview-assistant header button,
+.preview-cart-sheet header button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  background: #edf4ed;
+}
+
+.preview-assistant p { margin: 9px 0; font-size: 0.67rem; line-height: 1.55; }
+.preview-assistant > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.preview-assistant > div button,
+.preview-cart-sheet > button {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: #245f40;
+  cursor: pointer;
+  background: #edf4ed;
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.preview-cart-sheet header span { display: grid; gap: 2px; }
+.preview-cart-sheet header small { color: #718078; font-size: 0.58rem; }
+.preview-cart-sheet > div { margin: 13px 0; padding: 11px 0; border-block: 1px solid #e2e8df; font-size: 0.7rem; }
+.preview-cart-sheet > button { width: 100%; margin-top: 6px; }
+.preview-cart-sheet > button:nth-last-child(2) { color: white; background: #286a49; }

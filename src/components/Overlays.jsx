@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { navigation } from "./AppShell";
 import { Badge, BrandMark, Button, IconButton } from "./ui";
+import "../styles/overlay-interactions.css";
 
 function useEscape(onClose) {
   useEffect(() => {
@@ -94,6 +95,7 @@ const notifications = [
 ];
 
 export function NotificationDrawer({ open, onClose, onNavigate, unread = 3, onMarkRead, allowedViews }) {
+  const [tab, setTab] = useState("inbox");
   const allowed = new Set(allowedViews);
   const visibleNotifications = notifications.filter((item) => allowed.has(item.destination));
   const visibleUnread = Math.min(unread, visibleNotifications.length);
@@ -102,32 +104,34 @@ export function NotificationDrawer({ open, onClose, onNavigate, unread = 3, onMa
     <>
       <aside className={`notification-drawer${open ? " open" : ""}`} aria-hidden={!open}>
         <header><div><h2>Notifications</h2><p>Everything that needs your attention.</p></div><IconButton label="Close notifications" onClick={onClose}><X size={19} /></IconButton></header>
-        <div className="notification-tabs"><button className="active">Inbox {visibleUnread > 0 && <b>{visibleUnread}</b>}</button><button>Activity</button></div>
+        <div className="notification-tabs"><button className={tab === "inbox" ? "active" : ""} onClick={() => setTab("inbox")}>Inbox {visibleUnread > 0 && <b>{visibleUnread}</b>}</button><button className={tab === "activity" ? "active" : ""} onClick={() => setTab("activity")}>Activity</button></div>
         <div className="notification-list">
-          {visibleNotifications.map(({ destination, icon: Icon, tone, title, copy, time }, index) => (
+          {tab === "inbox" && visibleNotifications.map(({ destination, icon: Icon, tone, title, copy, time }, index) => (
             <button key={title} className={index < visibleUnread ? "unread" : ""} onClick={() => { onNavigate(destination); onClose(); }}>
               <span className={`notification-icon ${tone}`}><Icon size={18} /></span>
               <span><strong>{title}</strong><small>{copy}</small><time>{time} ago</time></span>
             </button>
           ))}
-          {visibleNotifications.length === 0 && <div className="palette-empty"><Bell size={24} /><strong>No notifications for this role</strong><span>Your focused inbox is clear.</span></div>}
+          {tab === "inbox" && visibleNotifications.length === 0 && <div className="palette-empty"><Bell size={24} /><strong>No notifications for this role</strong><span>Your focused inbox is clear.</span></div>}
+          {tab === "activity" && <div className="notification-activity"><article><span className="notification-icon green"><Check size={17} /></span><span><strong>Table 08 order accepted</strong><small>Manager review • 4 minutes ago</small></span></article><article><span className="notification-icon violet"><UsersRound size={17} /></span><span><strong>Reservation updated</strong><small>Yasmine Trabelsi • 18 minutes ago</small></span></article><article><span className="notification-icon orange"><Coffee size={17} /></span><span><strong>Menu availability changed</strong><small>Tiramisu jar • 36 minutes ago</small></span></article></div>}
         </div>
-        <footer><Button variant="secondary" onClick={onMarkRead}>{unread ? "Mark all as read" : "Inbox is clear"}</Button></footer>
+        <footer>{tab === "inbox" ? <Button variant="secondary" onClick={onMarkRead}>{unread ? "Mark all as read" : "Inbox is clear"}</Button> : <span className="activity-caption">Demo activity updates as actions are simulated.</span>}</footer>
       </aside>
       {open && <button className="drawer-scrim" onClick={onClose} aria-label="Close notifications" />}
     </>
   );
 }
 
-export function QuickCreateModal({ type, onClose, onSubmit }) {
-  const [form, setForm] = useState({ name: "", price: "", category: "Signature", date: "", time: "", guests: "2", phone: "", audience: "Loyal regulars", channel: "WhatsApp", table: "T01", item: "Pistachio cloud", payment: "Pay at cashier", note: "" });
+export function QuickCreateModal({ type, onClose, onSubmit, initialValues = {}, menuItems = [] }) {
+  const availableItems = menuItems.filter((item) => item.active);
+  const [form, setForm] = useState({ name: "", price: "", category: "Signature", date: "", time: "", guests: "2", phone: "", audience: "Loyal regulars", channel: "WhatsApp", table: "T01", item: availableItems[0]?.name || "Pistachio cloud", quantity: "1", payment: "Pay at cashier", note: "", ...initialValues });
   const update = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
   const config = {
     order: { title: "New counter order", description: "Add a staff-entered ticket directly to the live order board.", icon: ShoppingBag, submit: "Send to order board" },
     menu: { title: "Add a menu item", description: "Create a product now—you can add modifiers and translations later.", icon: Coffee, submit: "Add to menu" },
     reservation: { title: "New reservation", description: "Add a phone or walk-in booking to today’s calendar.", icon: CalendarDays, submit: "Create reservation" },
     campaign: { title: "Create a campaign", description: "Reach the right guests with a timely message.", icon: Megaphone, submit: "Save campaign" },
-    qr: { title: "Generate table QR", description: "Create a secure, session-ready QR for any table.", icon: QrCode, submit: "Generate QR" },
+    qr: { title: "Generate table QR", description: "Create a unique table marker. Scanning it starts a short-lived ordering session.", icon: QrCode, submit: "Prepare table QR" },
   }[type];
   if (!config) return null;
   const Icon = config.icon;
@@ -140,15 +144,16 @@ export function QuickCreateModal({ type, onClose, onSubmit }) {
         {type === "order" && (
           <div className="form-grid">
             <label><span>Table</span><select value={form.table} onChange={update("table")}>{Array.from({ length: 12 }, (_, i) => <option key={i}>T{String(i + 1).padStart(2, "0")}</option>)}</select></label>
-            <label><span>Item</span><select value={form.item} onChange={update("item")}><option>Pistachio cloud</option><option>Iced caramel latte</option><option>V60 Ethiopia</option><option>Tiramisu jar</option><option>Matcha strawberry</option></select></label>
+            <label><span>Item</span><select value={form.item} onChange={update("item")}>{availableItems.map((item) => <option key={item.id}>{item.name}</option>)}</select></label>
+            <label><span>Quantity</span><input type="number" min="1" max="20" value={form.quantity} onChange={update("quantity")} /></label>
             <label><span>Payment</span><select value={form.payment} onChange={update("payment")}><option>Pay at cashier</option><option>Paid • Cash</option><option>Paid • Card</option></select></label>
-            <label><span>Order note</span><input value={form.note} onChange={update("note")} placeholder="No sugar, oat milk…" /></label>
+            <label className="span-2"><span>Customization / note</span><input value={form.note} onChange={update("note")} placeholder="No sugar, oat milk, sauce on the side…" /></label>
           </div>
         )}
         {type === "menu" && (
           <div className="form-grid">
             <label className="span-2"><span>Item name</span><input required autoFocus placeholder="e.g. Hazelnut cold brew" value={form.name} onChange={update("name")} /></label>
-            <label><span>Category</span><select value={form.category} onChange={update("category")}><option>Signature</option><option>Hot coffee</option><option>Cold coffee</option><option>Desserts</option><option>Bakery</option></select></label>
+            <label><span>Category</span><select value={form.category} onChange={update("category")}><option>Signature</option><option>Coffee</option><option>Cold coffee</option><option>Slow coffee</option><option>Refreshers</option><option>Sandwiches</option><option>Snacks</option><option>Crêpes</option><option>Desserts</option><option>Bakery</option></select></label>
             <label><span>Price (TND)</span><input required type="number" min="0" step="0.5" placeholder="12.5" value={form.price} onChange={update("price")} /></label>
           </div>
         )}
@@ -171,11 +176,11 @@ export function QuickCreateModal({ type, onClose, onSubmit }) {
         )}
         {type === "qr" && (
           <div className="qr-create-layout">
-            <div className="qr-demo"><QrPattern /><span>Secure table session</span></div>
+            <div className="qr-demo"><QrPattern /><span>Permanent table marker</span></div>
             <div className="form-stack">
               <label><span>Table</span><select value={form.table} onChange={update("table")}>{Array.from({ length: 12 }, (_, i) => <option key={i}>T{String(i + 1).padStart(2, "0")}</option>)}</select></label>
-              <label><span>Session duration</span><select><option>4 hours</option><option>8 hours</option><option>Until closing</option></select></label>
-              <div className="form-note"><Zap size={16} /> Outside-café orders are blocked automatically.</div>
+              <label><span>Ordering session</span><input value="45-minute visit • starts on scan" readOnly /></label>
+              <div className="form-note"><Zap size={16} /> Customer orders wait for staff acceptance; production also validates and expires the device session.</div>
             </div>
           </div>
         )}
@@ -206,10 +211,16 @@ export function QrPattern({ size = 132 }) {
 export function CustomerPreview({ open, onClose, menuItems }) {
   const [category, setCategory] = useState("Featured");
   const [cart, setCart] = useState({});
-  const categories = ["Featured", "Coffee", "Cold", "Dessert"];
-  const visibleItems = useMemo(() => menuItems.filter((item) => item.active).slice(0, 5), [menuItems]);
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const categories = ["Featured", "Coffee", "Cold drinks", "Sandwiches", "Crepes", "Desserts"];
+  const visibleItems = useMemo(() => menuItems.filter((item) => {
+    if (!item.active) return false;
+    if (category === "Featured") return item.featured;
+    return item.customerCategory === category;
+  }).slice(0, 5), [category, menuItems]);
   const cartCount = Object.values(cart).reduce((total, quantity) => total + quantity, 0);
-  const total = visibleItems.reduce((sum, item) => sum + (cart[item.id] || 0) * item.price, 0);
+  const total = menuItems.reduce((sum, item) => sum + (cart[item.id] || 0) * item.price, 0);
   const adjust = (id, delta) => setCart((current) => ({ ...current, [id]: Math.max(0, (current[id] || 0) + delta) }));
   useEscape(onClose);
   return (
@@ -241,9 +252,12 @@ export function CustomerPreview({ open, onClose, menuItems }) {
                   )}
                 </article>
               ))}
+              {!visibleItems.length && <div className="palette-empty"><Coffee size={22} /><strong>No products in this preview category</strong><span>Choose another menu section.</span></div>}
             </section>
-            <button className="chat-bubble" aria-label="Open café assistant"><MessageCircle size={20} /><i /></button>
-            {cartCount > 0 && <button className="customer-cart"><span><b>{cartCount}</b> View my order</span><strong>{total.toFixed(3)} TND</strong></button>}
+            {assistantOpen && <section className="preview-assistant"><header><strong>Green helper</strong><button onClick={() => setAssistantOpen(false)} aria-label="Close café assistant"><X size={14} /></button></header><p>Hi Mariem! I can help with allergens, coffee choices, or finding a game for your table.</p><div><button onClick={() => setCategory("Coffee")}>Recommend coffee</button><button onClick={() => setCategory("Dessert")}>See desserts</button></div></section>}
+            <button className="chat-bubble" aria-label="Open café assistant" aria-expanded={assistantOpen} onClick={() => setAssistantOpen((value) => !value)}><MessageCircle size={20} /><i /></button>
+            {cartCount > 0 && <button className="customer-cart" onClick={() => setCartOpen(true)}><span><b>{cartCount}</b> View my order</span><strong>{total.toFixed(3)} TND</strong></button>}
+            {cartOpen && <section className="preview-cart-sheet"><header><span><strong>Your table order</strong><small>{cartCount} item{cartCount === 1 ? "" : "s"} • preview</small></span><button onClick={() => setCartOpen(false)} aria-label="Close order preview"><X size={15} /></button></header><div><span>Estimated total</span><strong>{total.toFixed(3)} TND</strong></div><button onClick={() => setCartOpen(false)}>Continue browsing</button><button onClick={() => { setCart({}); setCartOpen(false); }}>Clear preview order</button></section>}
           </div>
         </div>
       </aside>

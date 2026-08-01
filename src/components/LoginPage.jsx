@@ -7,9 +7,9 @@ import {
   Eye,
   EyeOff,
   LockKeyhole,
+  QrCode,
   ShieldCheck,
   Sparkles,
-  Store,
   UserRound,
   UsersRound,
 } from "lucide-react";
@@ -20,11 +20,10 @@ const roleIcons = {
   owner: ShieldCheck,
   manager: UsersRound,
   barista: ChefHat,
-  floor: Store,
   customer: UserRound,
 };
 
-export default function LoginPage({ onLogin }) {
+export default function LoginPage({ onLogin, onOpenTableOrdering }) {
   const [selectedId, setSelectedId] = useState("owner");
   const selected = useMemo(() => DEMO_ACCOUNTS.find((account) => account.id === selectedId) || DEMO_ACCOUNTS[0], [selectedId]);
   const [email, setEmail] = useState(DEMO_ACCOUNTS[0].email);
@@ -79,6 +78,13 @@ export default function LoginPage({ onLogin }) {
             <span className={`selected-role-icon ${selected.color}`}><SelectedIcon size={22} /></span>
             <div><span>Welcome to your workspace</span><h2>Sign in as {selected.roleLabel.toLowerCase()}.</h2><p>Choose a demo actor or enter one of the account credentials.</p></div>
           </header>
+
+          <button className="guest-order-entry" type="button" onClick={onOpenTableOrdering}>
+            <span><QrCode size={22} /></span>
+            <span><strong>At a café table?</strong><small>Scan your table QR to open a private ordering session. No account needed.</small></span>
+            <ArrowRight size={18} />
+          </button>
+          <div className="login-divider"><span>or preview a staff/customer workspace</span></div>
 
           <div className="account-chooser" aria-label="Choose a demo account">
             {DEMO_ACCOUNTS.map((account) => {
