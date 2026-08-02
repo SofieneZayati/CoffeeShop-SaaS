@@ -46,7 +46,328 @@ import {
 } from "lucide-react";
 import { campaigns, customers, feedback, heatmap, menuItemsSeed } from "../data/demoData";
 import { Avatar, Badge, Button, Card, IconButton, MetricDelta, PageHeader, Progress, SectionTitle, Segmented } from "../components/ui";
+import { StaffLocalized, translateStaffText, useStaffLanguage } from "../context/StaffLanguageContext";
 import "../styles/admin-interactions.css";
+
+const growthDictionary = { fr: {
+  "Relationships": "Relation client",
+  "Customers & loyalty": "Clients et fidélité",
+  "Know your regulars, reward their rituals, and make every return feel personal.": "Reconnaissez vos habitués, récompensez leurs habitudes et personnalisez chaque retour.",
+  "Export customers": "Exporter les clients",
+  "Add customer": "Ajouter un client",
+  "Dismiss message": "Fermer le message",
+  "Total customers": "Total clients",
+  "72% opted into marketing": "72 % ont accepté les communications",
+  "Return rate": "Taux de retour",
+  "+4.1 pts this quarter": "+4,1 pts ce trimestre",
+  "Strong": "Fort",
+  "Points redeemed": "Points utilisés",
+  "312 rewards this month": "312 récompenses ce mois-ci",
+  "Member value": "Valeur membre",
+  "1.7× non-member spend": "1,7× la dépense d’un non-membre",
+  "VIP & Gold": "VIP et Gold",
+  "New guests": "Nouveaux clients",
+  "At risk": "À relancer",
+  "Football fans": "Fans de football",
+  "+18 this month": "+18 ce mois-ci",
+  "Last 30 days": "30 derniers jours",
+  "No visit in 30d": "Aucune visite depuis 30 j",
+  "Event opt-ins": "Inscriptions événements",
+  "Customer directory": "Répertoire clients",
+  "Profiles, visits, preferences, and value": "Profils, visites, préférences et valeur",
+  "Reset filters": "Réinitialiser les filtres",
+  "Search customers…": "Rechercher un client…",
+  "All customers": "Tous les clients",
+  "Customer": "Client",
+  "Tier": "Niveau",
+  "Visits": "Visites",
+  "Total spend": "Dépense totale",
+  "Points": "Points",
+  "Last visit": "Dernière visite",
+  "Gold": "Gold",
+  "Silver": "Silver",
+  "Bronze": "Bronze",
+  "LOYALTY PROGRAM": "PROGRAMME DE FIDÉLITÉ",
+  "Turn visits into rituals.": "Transformez les visites en habitudes.",
+  "1 TND = 10 points • Free drink at 1,000 points": "1 TND = 10 points • Boisson offerte à 1 000 points",
+  "Active members": "Membres actifs",
+  "Repeat visits": "Visites répétées",
+  "Manage rewards": "Gérer les récompenses",
+  "5 THIS WEEK": "5 CETTE SEMAINE",
+  "Birthdays coming up": "Anniversaires à venir",
+  "Review each guest and their prepared reward.": "Consultez chaque client et sa récompense préparée.",
+  "View birthdays": "Voir les anniversaires",
+  "Refer a friend": "Parrainage",
+  "Both guests earn 150 points": "Les deux clients gagnent 150 points",
+  "invites": "invitations",
+  "converted": "converties",
+  "Configure referral": "Configurer le parrainage",
+  "Active customer": "Client actif",
+  "Customer profile": "Profil client",
+  "Full history and preferences": "Historique complet et préférences",
+  "Close customer": "Fermer le profil client",
+  "Member since October 2024": "Membre depuis octobre 2024",
+  "Marketing opt-in": "Communications acceptées",
+  "TND spent": "TND dépensés",
+  "Preferences": "Préférences",
+  "Oat milk": "Lait d’avoine",
+  "Usually iced": "Généralement glacé",
+  "Afternoon visitor": "Visite l’après-midi",
+  "Rewards wallet": "Portefeuille de récompenses",
+  "Free signature drink": "Boisson signature offerte",
+  "Expires August 31": "Expire le 31 août",
+  "Ready": "Prête",
+  "Receipt history": "Historique des reçus",
+  "38 synced receipts": "38 reçus synchronisés",
+  "Recent activity": "Activité récente",
+  "Left a 5-star rating": "A laissé une note de 5 étoiles",
+  "“Always my favorite spot.”": "« Toujours mon endroit préféré. »",
+  "Scanned receipt QR": "QR du reçu scanné",
+  "Points credited automatically": "Points crédités automatiquement",
+  "Add reward": "Ajouter une récompense",
+  "Send message": "Envoyer un message",
+  "Birthdays this week": "Anniversaires de la semaine",
+  "Five guests with rewards ready to review": "Cinq clients avec une récompense prête",
+  "Rewards programme": "Programme de récompenses",
+  "Manage how customers earn and redeem points": "Gérez la façon dont les clients gagnent et utilisent leurs points",
+  "Referral programme": "Programme de parrainage",
+  "Manage invite and reward rules": "Gérez les invitations et les règles de récompense",
+  "Create a customer profile": "Créer un profil client",
+  "Customer workspace": "Espace clients",
+  "Active": "Actif",
+  "10 points per 1 TND • reward at 1,000 points": "10 points par TND • récompense à 1 000 points",
+  "Points earned per 1 TND": "Points gagnés par TND",
+  "Free drink threshold": "Seuil de la boisson offerte",
+  "Birthday reward": "Récompense d’anniversaire",
+  "Signature drink": "Boisson signature",
+  "Hot coffee": "Café chaud",
+  "Dessert": "Dessert",
+  "Give 150, get 150": "Offrez 150, recevez 150",
+  "Reward both people after the friend’s first visit": "Récompensez les deux personnes après la première visite du filleul",
+  "31% conversion": "31 % de conversion",
+  "Inviter reward": "Récompense du parrain",
+  "Friend reward": "Récompense du filleul",
+  "Reward trigger": "Déclencheur de la récompense",
+  "First completed order": "Première commande terminée",
+  "First café visit": "Première visite au café",
+  "Full name": "Nom complet",
+  "Customer name": "Nom du client",
+  "Favourite item": "Article préféré",
+  "House espresso": "Espresso maison",
+  "Starting points": "Points de départ",
+  "Cancel": "Annuler",
+  "Close": "Fermer",
+  "Save settings": "Enregistrer les paramètres",
+  "Bring them back": "Donnez-leur envie de revenir",
+  "Campaigns & feedback": "Campagnes et avis",
+  "Timely messages, honest guest feedback, and growth you can feel.": "Des messages au bon moment, des avis sincères et une croissance visible.",
+  "Feedback QR": "QR d’avis",
+  "New campaign": "Nouvelle campagne",
+  "Messages sent": "Messages envoyés",
+  "Across all channels": "Tous canaux confondus",
+  "Avg. conversion": "Conversion moyenne",
+  "Industry benchmark 9.4%": "Référence du secteur : 9,4 %",
+  "2× benchmark": "2× la référence",
+  "Guest rating": "Note des clients",
+  "286 verified ratings": "286 notes vérifiées",
+  "Feedback rate": "Taux d’avis",
+  "Via table QR": "Via le QR de table",
+  "Campaigns": "Campagnes",
+  "Recent and scheduled broadcasts": "Envois récents et programmés",
+  "Clear filter": "Effacer le filtre",
+  "Campaign status": "Statut des campagnes",
+  "Live": "En direct",
+  "Scheduled": "Programmée",
+  "Completed": "Terminée",
+  "Campaign": "Campagne",
+  "Audience": "Audience",
+  "Reach": "Portée",
+  "Conversion": "Conversion",
+  "Status": "Statut",
+  "Always on": "Toujours active",
+  "Derby night at Green": "Soirée derby chez Green",
+  "Your afternoon pick-me-up": "Votre pause de l’après-midi",
+  "We miss you, have 20%": "Vous nous manquez : profitez de 20 %",
+  "Birthday coffee is on us": "Le café d’anniversaire est offert",
+  "Nearby customers": "Clients à proximité",
+  "Inactive 30d": "Inactifs depuis 30 j",
+  "Birthdays": "Anniversaires",
+  "Monthly": "Chaque mois",
+  "Until Aug 14": "Jusqu’au 14 août",
+  "SCHEDULED": "PROGRAMMÉE",
+  "A full house, before kick-off.": "Salle comble avant le coup d’envoi.",
+  "Your big-match message will reach 1,284 football fans at 18:00.": "Votre message de grand match touchera 1 284 fans de football à 18 h.",
+  "+1,281 opted-in guests": "+1 281 clients inscrits",
+  "Review campaign": "Voir la campagne",
+  "Fresh feedback": "Avis récents",
+  "Latest from your guests": "Les derniers retours de vos clients",
+  "View all": "Tout voir",
+  "286 reviews": "286 avis",
+  "Reply": "Répondre",
+  "SERVICE REVIEW DIGEST": "SYNTHÈSE DES AVIS",
+  "Guests love the service speed.": "Les clients apprécient la rapidité du service.",
+  "“Friendly team” and “fast QR ordering” appeared 18 times this week. The main request is more single-origin coffee.": "« Équipe accueillante » et « commande QR rapide » reviennent 18 fois cette semaine. La principale demande concerne davantage de cafés d’origine unique.",
+  "Positive sentiment 92%": "Avis positifs : 92 %",
+  "1 menu opportunity": "1 opportunité sur la carte",
+  "Open full summary": "Ouvrir la synthèse",
+  "Campaign workspace": "Espace campagne",
+  "Tell us how your visit went": "Dites-nous comment s’est passée votre visite",
+  "This QR opens a short mobile feedback form linked to the café, without exposing a customer’s private profile.": "Ce QR ouvre un court formulaire mobile lié au café, sans exposer le profil privé d’un client.",
+  "Channel": "Canal",
+  "Scheduled date": "Date programmée",
+  "Sending requires a connected messaging provider and valid customer consent.": "L’envoi nécessite un fournisseur de messagerie connecté et le consentement valide du client.",
+  "Your reply": "Votre réponse",
+  "Review this reply before sending it.": "Vérifiez cette réponse avant de l’envoyer.",
+  "Service speed is the clearest advantage": "La rapidité du service est le principal atout",
+  "18 recent comments mentioned friendly, fast table service.": "18 avis récents mentionnent un service à table rapide et accueillant.",
+  "Opportunity": "Opportunité",
+  "More single-origin choice": "Plus de choix en origine unique",
+  "Seven guests asked for a rotating filter-coffee option.": "Sept clients demandent une sélection tournante de cafés filtre.",
+  "Next step": "Prochaine étape",
+  "Test a weekend special": "Tester une offre du week-end",
+  "Feature one single-origin brew and compare orders with a normal weekend.": "Mettez en avant une origine unique et comparez les commandes avec un week-end habituel.",
+  "Open campaign builder": "Ouvrir l’éditeur de campagne",
+  "Send reply": "Envoyer la réponse",
+  "Close details": "Fermer les détails",
+  "Close marketing details": "Fermer les détails marketing",
+  "Know what works": "Comprendre ce qui fonctionne",
+  "Insights": "Analyses",
+  "Clear answers about sales, guests, QR activity, and the hours that shape your day.": "Des réponses claires sur les ventes, les clients, l’activité QR et les heures qui rythment la journée.",
+  "Last 7 days": "7 derniers jours",
+  "30 days": "30 jours",
+  "Quarter": "Trimestre",
+  "This year": "Cette année",
+  "Export report": "Exporter le rapport",
+  "Net revenue": "Chiffre d’affaires net",
+  "4,842.000 more than last period": "4 842,000 de plus que la période précédente",
+  "Orders": "Commandes",
+  "74.7 orders per day": "74,7 commandes par jour",
+  "Avg. order value": "Panier moyen",
+  "Best at dinner • 19.420": "Meilleur le soir • 19,420",
+  "Returning customers": "Clients fidèles",
+  "1,501 repeat visits": "1 501 visites répétées",
+  "Performance trend": "Évolution des performances",
+  "Chart metric": "Mesure du graphique",
+  "Revenue": "Chiffre d’affaires",
+  "Sales mix": "Répartition des ventes",
+  "Revenue by category": "Chiffre d’affaires par catégorie",
+  "TND total": "TND au total",
+  "Coffee": "Cafés",
+  "Cold drinks": "Boissons froides",
+  "Desserts": "Pâtisseries",
+  "Bakery & other": "Boulangerie et autres",
+  "Peak-hour heatmap": "Carte des heures de pointe",
+  "Orders by hour and weekday • darker means busier": "Commandes par heure et jour • plus foncé signifie plus fréquenté",
+  "Mon": "Lun",
+  "Tue": "Mar",
+  "Wed": "Mer",
+  "Thu": "Jeu",
+  "Fri": "Ven",
+  "Sat": "Sam",
+  "Sun": "Dim",
+  "Your busiest window is Friday–Sunday, 18:00–21:00.": "Votre période la plus chargée est du vendredi au dimanche, de 18 h à 21 h.",
+  "Plan +1 shift teammate and pre-batch cold brew.": "Prévoyez une personne de plus et préparez le cold brew à l’avance.",
+  "QR performance": "Performance des QR",
+  "Menu, table, receipts & feedback": "Carte, tables, reçus et avis",
+  "scans": "scans",
+  "+18.4% this period": "+18,4 % sur cette période",
+  "Table ordering": "Commande à table",
+  "Storefront menu": "Carte publique",
+  "Receipt loyalty": "Fidélité via reçu",
+  "Feedback": "Avis",
+  "Product performance": "Performance des produits",
+  "Top items by revenue and momentum": "Meilleurs articles par chiffre d’affaires et dynamique",
+  "Full report": "Rapport complet",
+  "Product": "Produit",
+  "Units": "Unités",
+  "Trend": "Tendance",
+  "GREEN ASSISTANT": "ASSISTANT GREEN",
+  "Three things worth knowing.": "Trois informations à retenir.",
+  "Cold drinks bring guests back": "Les boissons froides fidélisent",
+  "Iced coffee and fresh juices lead repeat afternoon visits.": "Le café glacé et les jus frais favorisent les retours l’après-midi.",
+  "Thursday has room to grow": "Le jeudi a un potentiel de croissance",
+  "A 15:00 happy hour could add an estimated 210 TND weekly.": "Une offre à 15 h pourrait générer environ 210 TND par semaine.",
+  "Football guests spend more": "Les clients football dépensent davantage",
+  "Event-night order value is 22% above your average.": "Le panier des soirées événement est supérieur de 22 % à la moyenne.",
+  "Open assistant": "Ouvrir l’assistant",
+  "Close customer profile": "Fermer le profil client",
+  "Reward rules apply to future loyalty activity after you save them.": "Les règles s’appliquent aux prochaines activités de fidélité après enregistrement.",
+  "Customer export is ready for download.": "L’export des clients est prêt au téléchargement.",
+  "Feedback QR": "QR d’avis",
+  "All guest feedback": "Tous les avis clients",
+  "Review insight summary": "Synthèse des avis",
+  "Review and complete the next action.": "Vérifiez puis terminez l’action suivante.",
+  "Menu": "Carte",
+  "Service": "Service",
+  "Ordering": "Commande",
+  "Yesterday": "Hier",
+  "Iced coffee": "Café glacé",
+  "Direct coffee": "Café direct",
+  "Green Coffee Games juice": "Jus Green Coffee Games",
+  "Espresso": "Espresso",
+  "Banana Nutella crêpe": "Crêpe banane Nutella",
+  "Anonymous • T04": "Anonyme • T04",
+  "The iced coffee was perfect and the team was so kind.": "Le café glacé était parfait et l’équipe très accueillante.",
+  "Love the QR ordering. Super fast even when the café is full.": "J’adore la commande par QR. Très rapide même lorsque le café est plein.",
+  "Great direct coffee. The new bilingual menu is very clear.": "Excellent café direct. La nouvelle carte bilingue est très claire.",
+  "12 min ago": "il y a 12 min",
+  "1h ago": "il y a 1 h",
+  "Free dessert": "Dessert offert",
+  "Free hot coffee": "Café chaud offert",
+  "Double points": "Points doublés",
+  "Reward ready": "Récompense prête",
+  "Message ready": "Message prêt",
+  "Monday": "Lundi",
+  "Wednesday": "Mercredi",
+  "Thursday": "Jeudi",
+  "Friday": "Vendredi",
+  "Sunday": "Dimanche",
+  "Aug 3": "3 août",
+  "Aug 5": "5 août",
+  "Aug 6": "6 août",
+  "Aug 7": "7 août",
+  "Aug 9": "9 août",
+  "Push": "Notification push",
+  "Email": "E-mail",
+  "Automation": "Automatisation",
+  "Jul 7": "7 juil.",
+  "Jul 8": "8 juil.",
+  "Jul 6": "6 juil.",
+  "Jul 5": "5 juil.",
+  "Jun 12": "12 juin",
+  "Jun 18": "18 juin",
+  "Jun 24": "24 juin",
+  "Jun 30": "30 juin",
+  "Jul 6": "6 juil.",
+  "Today": "Aujourd’hui",
+} };
+
+const growthPatterns = [
+  (text, locale) => {
+    if (locale !== "fr") return undefined;
+    const rules = [
+      [/^Loves (.+)$/, "Apprécie $1"],
+      [/^Ordered (.+)$/, "A commandé $1"],
+      [/^(.+) • (.+) reached • (.+) conversion$/, "$1 • $2 destinataires • $3 de conversion"],
+      [/^Reply to (.+)$/, "Répondre à $1"],
+      [/^(\d+) orders$/, "$1 commandes"],
+      [/^(.+) compared with previous period$/, "$1 par rapport à la période précédente"],
+      [/^(\d+) orders$/, "$1 commandes"],
+      [/^(\d+) scans$/, "$1 scans"],
+      [/^(\d+) orders$/, "$1 commandes"],
+      [/^(.+) reached • (.+) conversion$/, "$1 destinataires • $2 de conversion"],
+      [/^(.+) was added to the customer directory\.$/, "$1 a été ajouté au répertoire clients."],
+      [/^A reward was added to (.+)\.$/, "Une récompense a été ajoutée à $1."],
+      [/^(.+) segment opened in the directory\.$/, "Segment $1 ouvert dans le répertoire."],
+      [/^Close (.+)$/, "Fermer : $1"],
+      [/^(.+) settings updated\.$/, "Paramètres « $1 » enregistrés."],
+      [/^(\d+) reached • (.+) conversion$/, "$1 destinataires • $2 de conversion"],
+      [/^Thank you, (.+)! We’re glad you enjoyed your visit and hope to welcome you back soon\.$/, "Merci, $1 ! Nous sommes ravis que votre visite vous ait plu et espérons vous revoir bientôt."],
+    ];
+    for (const [pattern, replacement] of rules) if (pattern.test(text)) return text.replace(pattern, replacement);
+    return undefined;
+  },
+];
 
 const segmentCards = [
   { label: "VIP & Gold", value: "284", change: "+18 this month", icon: Trophy, tone: "gold", progress: 76 },
@@ -97,13 +418,14 @@ export function CustomersView({ onQuick }) {
     setAddedCustomers((current) => [customer, ...current]);
     setPanel(null);
     setSelected(customer);
-    setNotice(`${customer.name} was added to this demo session.`);
+    setNotice(`${customer.name} was added to the customer directory.`);
   }
 
   return (
+    <StaffLocalized dictionary={growthDictionary} patterns={growthPatterns}>
     <div className="view customers-view">
       <PageHeader eyebrow="Relationships" title="Customers & loyalty" description="Know your regulars, reward their rituals, and make every return feel personal."
-        actions={<><Button variant="secondary" icon={Download} onClick={() => setNotice("Customer export preview prepared — a production version would download the current filtered list.")}>Export customers</Button><Button icon={UserPlus} onClick={() => { setSelected(null); setPanel("add"); }}>Add customer</Button></>}
+        actions={<><Button variant="secondary" icon={Download} onClick={() => setNotice("Customer export is ready for download.")}>Export customers</Button><Button icon={UserPlus} onClick={() => { setSelected(null); setPanel("add"); }}>Add customer</Button></>}
       />
       {notice && <div className="admin-notice" role="status"><Check size={16} /><span>{notice}</span><button onClick={() => setNotice("")} aria-label="Dismiss message"><X size={15} /></button></div>}
       <section className="customer-metrics">
@@ -148,14 +470,16 @@ export function CustomersView({ onQuick }) {
         </div>
       </div>
 
-      {selected && <CustomerDetail customer={selected} onClose={() => setSelected(null)} onCampaign={() => { setSelected(null); onQuick("campaign"); }} onReward={() => setNotice(`A reward was added to ${selected.name} in this demo session.`)} />}
+      {selected && <CustomerDetail customer={selected} onClose={() => setSelected(null)} onCampaign={() => { setSelected(null); onQuick("campaign"); }} onReward={() => setNotice(`A reward was added to ${selected.name}.`)} />}
       {panel && <CustomerAdminPanel mode={panel} onClose={() => setPanel(null)} onAddCustomer={addCustomer} onOpenCustomer={(customer) => { setPanel(null); setSelected(customer); }} onNotice={(message) => { setPanel(null); setNotice(message); }} />}
     </div>
+    </StaffLocalized>
   );
 }
 
 function CustomerDetail({ customer, onClose, onCampaign, onReward }) {
   return (
+    <StaffLocalized dictionary={growthDictionary} patterns={growthPatterns}>
     <><aside className="detail-panel open customer-detail"><header><div><Badge tone="green" dot>Active customer</Badge><h2>Customer profile</h2><p>Full history and preferences</p></div><IconButton label="Close customer" onClick={onClose}><X size={19} /></IconButton></header><div className="detail-body">
       <div className="customer-profile-hero"><Avatar initials={customer.initials} size="xl" tone={2} online /><div><h2>{customer.name}</h2><span>Member since October 2024</span><div><Badge tone={customer.tier === "VIP" ? "dark" : "orange"}><Trophy size={11} />{customer.tier}</Badge><Badge tone="green">Marketing opt-in</Badge></div></div></div>
       <div className="profile-kpis"><div><strong>{customer.visits}</strong><span>Visits</span></div><div><strong>{customer.spent.toFixed(3)}</strong><span>TND spent</span></div><div><strong>{customer.points.toLocaleString()}</strong><span>Points</span></div></div>
@@ -163,24 +487,27 @@ function CustomerDetail({ customer, onClose, onCampaign, onReward }) {
       <section><h3>Rewards wallet</h3><div className="wallet-item"><Gift size={18} /><span><strong>Free signature drink</strong><small>Expires August 31</small></span><Badge tone="green">Ready</Badge></div><div className="wallet-item"><ReceiptText size={18} /><span><strong>Receipt history</strong><small>38 synced receipts</small></span><ChevronRight size={15} /></div></section>
       <section><h3>Recent activity</h3><ol className="profile-activity"><li><span className="activity-icon"><ShoppingBag size={15} /></span><span><strong>Ordered {customer.favorite}</strong><small>{customer.last} • 18.500 TND</small></span><b>+185 pts</b></li><li><span className="activity-icon"><Star size={15} /></span><span><strong>Left a 5-star rating</strong><small>“Always my favorite spot.”</small></span></li><li><span className="activity-icon"><QrCode size={15} /></span><span><strong>Scanned receipt QR</strong><small>Points credited automatically</small></span><b>+120 pts</b></li></ol></section>
     </div><footer><Button variant="secondary" icon={Gift} onClick={onReward}>Add reward</Button><Button icon={Send} onClick={onCampaign}>Send message</Button></footer></aside><button className="drawer-scrim" onClick={onClose} aria-label="Close customer profile" /></>
+    </StaffLocalized>
   );
 }
 
 function CustomerAdminPanel({ mode, onClose, onAddCustomer, onOpenCustomer, onNotice }) {
   const titles = {
     birthdays: ["Birthdays this week", "Five guests with rewards ready to review"],
-    rewards: ["Rewards programme", "Preview the rules customers earn against"],
-    referral: ["Referral programme", "Preview the invite and reward rules"],
-    add: ["Add customer", "Create a profile in this local demo session"],
+    rewards: ["Rewards programme", "Manage how customers earn and redeem points"],
+    referral: ["Referral programme", "Manage invite and reward rules"],
+    add: ["Add customer", "Create a customer profile"],
   };
   const [title, subtitle] = titles[mode];
   return (
-    <><aside className="detail-panel open admin-detail-panel"><header><div><Badge tone="purple">Interactive demo</Badge><h2>{title}</h2><p>{subtitle}</p></div><IconButton label={`Close ${title}`} onClick={onClose}><X size={19} /></IconButton></header><div className="detail-body">
+    <StaffLocalized dictionary={growthDictionary} patterns={growthPatterns}>
+    <><aside className="detail-panel open admin-detail-panel"><header><div><Badge tone="purple">Customer workspace</Badge><h2>{title}</h2><p>{subtitle}</p></div><IconButton label={`Close ${title}`} onClick={onClose}><X size={19} /></IconButton></header><div className="detail-body">
       {mode === "birthdays" && <div className="birthday-roster">{birthdayGuests.map(({ customer, date, day, reward, status }, index) => <button key={`${customer.name}-${date}`} onClick={() => onOpenCustomer(customer)}><Avatar initials={customer.initials} tone={index} /><span><strong>{customer.name}</strong><small>{day}, {date} • {reward}</small></span><Badge tone={status === "Reward ready" ? "green" : "purple"}>{status}</Badge><ChevronRight size={16} /></button>)}</div>}
-      {mode === "rewards" && <div className="admin-form-stack"><div className="admin-summary-card"><Gift size={20} /><span><strong>Green Rewards</strong><small>10 points per 1 TND • reward at 1,000 points</small></span><Badge tone="green">Active demo</Badge></div><label><span>Points earned per 1 TND</span><input type="number" defaultValue="10" /></label><label><span>Free drink threshold</span><input type="number" defaultValue="1000" /></label><label><span>Birthday reward</span><select defaultValue="Signature drink"><option>Signature drink</option><option>Hot coffee</option><option>Dessert</option></select></label><p className="admin-helper">Changes here only preview how programme configuration could look; customer balances are not sent anywhere.</p></div>}
-      {mode === "referral" && <div className="admin-form-stack"><div className="admin-summary-card"><Share2 size={20} /><span><strong>Give 150, get 150</strong><small>Reward both people after the friend’s first visit</small></span><Badge tone="purple">31% sample conversion</Badge></div><label><span>Inviter reward</span><input type="number" defaultValue="150" /></label><label><span>Friend reward</span><input type="number" defaultValue="150" /></label><label><span>Reward trigger</span><select defaultValue="First completed order"><option>First completed order</option><option>First café visit</option></select></label></div>}
-      {mode === "add" && <form id="add-customer-demo" className="admin-form-stack" onSubmit={onAddCustomer}><label><span>Full name</span><input name="name" required autoFocus placeholder="Customer name" /></label><label><span>Favourite item</span><input name="favorite" placeholder="House espresso" /></label><label><span>Starting points</span><input name="points" min="0" type="number" defaultValue="0" /></label><p className="admin-helper">This profile remains only until the page is refreshed.</p></form>}
-    </div><footer>{mode === "add" ? <><Button variant="secondary" onClick={onClose}>Cancel</Button><Button icon={UserPlus} type="submit" form="add-customer-demo">Add to demo</Button></> : <><Button variant="secondary" onClick={onClose}>Close</Button><Button icon={Check} onClick={() => onNotice(`${title} settings updated for this demo session.`)}>Apply preview</Button></>}</footer></aside><button className="drawer-scrim" onClick={onClose} aria-label={`Close ${title}`} /></>
+      {mode === "rewards" && <div className="admin-form-stack"><div className="admin-summary-card"><Gift size={20} /><span><strong>Green Rewards</strong><small>10 points per 1 TND • reward at 1,000 points</small></span><Badge tone="green">Active</Badge></div><label><span>Points earned per 1 TND</span><input type="number" defaultValue="10" /></label><label><span>Free drink threshold</span><input type="number" defaultValue="1000" /></label><label><span>Birthday reward</span><select defaultValue="Signature drink"><option>Signature drink</option><option>Hot coffee</option><option>Dessert</option></select></label><p className="admin-helper">Reward rules apply to future loyalty activity after you save them.</p></div>}
+      {mode === "referral" && <div className="admin-form-stack"><div className="admin-summary-card"><Share2 size={20} /><span><strong>Give 150, get 150</strong><small>Reward both people after the friend’s first visit</small></span><Badge tone="purple">31% conversion</Badge></div><label><span>Inviter reward</span><input type="number" defaultValue="150" /></label><label><span>Friend reward</span><input type="number" defaultValue="150" /></label><label><span>Reward trigger</span><select defaultValue="First completed order"><option>First completed order</option><option>First café visit</option></select></label></div>}
+      {mode === "add" && <form id="add-customer-demo" className="admin-form-stack" onSubmit={onAddCustomer}><label><span>Full name</span><input name="name" required autoFocus placeholder="Customer name" /></label><label><span>Favourite item</span><input name="favorite" placeholder="House espresso" /></label><label><span>Starting points</span><input name="points" min="0" type="number" defaultValue="0" /></label></form>}
+    </div><footer>{mode === "add" ? <><Button variant="secondary" onClick={onClose}>Cancel</Button><Button icon={UserPlus} type="submit" form="add-customer-demo">Add customer</Button></> : <><Button variant="secondary" onClick={onClose}>Close</Button><Button icon={Check} onClick={() => onNotice(`${title} settings updated.`)}>Save settings</Button></>}</footer></aside><button className="drawer-scrim" onClick={onClose} aria-label={`Close ${title}`} /></>
+    </StaffLocalized>
   );
 }
 
@@ -189,6 +516,7 @@ export function MarketingView({ onQuick }) {
   const [detail, setDetail] = useState(null);
   const filteredCampaigns = campaignTab === "All" ? campaigns : campaigns.filter((item) => item.status === campaignTab);
   return (
+    <StaffLocalized dictionary={growthDictionary} patterns={growthPatterns}>
     <div className="view marketing-view">
       <PageHeader eyebrow="Bring them back" title="Campaigns & feedback" description="Timely messages, honest guest feedback, and growth you can feel."
         actions={<><Button variant="secondary" icon={QrCode} onClick={() => setDetail({ kind: "qr" })}>Feedback QR</Button><Button icon={Plus} onClick={() => onQuick("campaign")}>New campaign</Button></>}
@@ -215,24 +543,28 @@ export function MarketingView({ onQuick }) {
           <div className="feedback-card-head"><SectionTitle title="Fresh feedback" subtitle="Latest from your guests" action="View all" onAction={() => setDetail({ kind: "reviews" })} /><div className="rating-summary"><strong>4.9</strong><span>★★★★★<small>286 reviews</small></span></div></div>
           <div className="feedback-list">{feedback.map((item, index) => <article key={item.name}><Avatar initials={item.name.slice(0, 2).toUpperCase()} size="sm" tone={index + 1} /><div><div><strong>{item.name}</strong><span>{"★".repeat(item.rating)}</span></div><p>{item.text}</p><small><Badge tone="neutral">{item.tag}</Badge>{item.time}</small></div><button onClick={() => setDetail({ kind: "reply", item })}><MessageCircle size={15} />Reply</button></article>)}</div>
         </Card>
-        <Card className="review-ai-card"><span className="ai-orb"><Sparkles size={23} /></span><div><Badge tone="purple">AI REVIEW DIGEST</Badge><h3>Guests love the service speed.</h3><p>“Friendly team” and “fast QR ordering” appeared 18 times this week. The main request is more single-origin coffee.</p><div><span><Check size={14} />Positive sentiment 92%</span><span><Lightbulb size={14} />1 menu opportunity</span></div></div><button onClick={() => setDetail({ kind: "summary" })}>Full AI summary <ChevronRight size={15} /></button></Card>
+        <Card className="review-ai-card"><span className="ai-orb"><Sparkles size={23} /></span><div><Badge tone="purple">SERVICE REVIEW DIGEST</Badge><h3>Guests love the service speed.</h3><p>“Friendly team” and “fast QR ordering” appeared 18 times this week. The main request is more single-origin coffee.</p><div><span><Check size={14} />Positive sentiment 92%</span><span><Lightbulb size={14} />1 menu opportunity</span></div></div><button onClick={() => setDetail({ kind: "summary" })}>Open full summary <ChevronRight size={15} /></button></Card>
       </div>
       {detail && <MarketingAdminPanel detail={detail} onClose={() => setDetail(null)} onCampaign={() => { setDetail(null); onQuick("campaign"); }} />}
     </div>
+    </StaffLocalized>
   );
 }
 
 function MarketingAdminPanel({ detail, onClose, onCampaign }) {
+  const { locale } = useStaffLanguage();
   const campaign = detail.item;
-  const heading = detail.kind === "qr" ? "Feedback QR preview" : detail.kind === "campaign" ? campaign?.name : detail.kind === "reply" ? `Reply to ${detail.item.name}` : detail.kind === "reviews" ? "All guest feedback" : "Review insight summary";
+  const heading = detail.kind === "qr" ? "Feedback QR" : detail.kind === "campaign" ? campaign?.name : detail.kind === "reply" ? `Reply to ${detail.item.name}` : detail.kind === "reviews" ? "All guest feedback" : "Review insight summary";
   return (
-    <><aside className="detail-panel open admin-detail-panel"><header><div><Badge tone="purple">Interactive demo</Badge><h2>{heading}</h2><p>{detail.kind === "campaign" ? `${campaign.type} • ${campaign.date}` : "Explore the next step without sending anything."}</p></div><IconButton label="Close details" onClick={onClose}><X size={19} /></IconButton></header><div className="detail-body">
-      {detail.kind === "qr" && <div className="admin-qr-preview"><span><QrCode size={92} /></span><h3>Tell us how your visit went</h3><p>In production, this QR would open a short mobile feedback form tied to the café—not to a customer’s private profile.</p><code>greencoffee.demo/feedback/table</code></div>}
-      {detail.kind === "campaign" && <div className="admin-form-stack"><div className="admin-summary-card"><Send size={20} /><span><strong>{campaign.audience}</strong><small>{campaign.reach} reached • {campaign.conversion} conversion</small></span><Badge tone={campaign.status === "Live" ? "green" : "blue"}>{campaign.status}</Badge></div><label><span>Channel</span><input value={campaign.type} readOnly /></label><label><span>Scheduled date</span><input value={campaign.date} readOnly /></label><p className="admin-helper">This is illustrative campaign data. Editing or sending would require a connected messaging provider and consent controls.</p></div>}
-      {detail.kind === "reply" && <form id="feedback-reply-demo" className="admin-form-stack" onSubmit={(event) => { event.preventDefault(); onClose(); }}><div className="admin-quote">“{detail.item.text}”</div><label><span>Your reply</span><textarea rows="5" defaultValue={`Thank you, ${detail.item.name.split(" ")[0]}! We’re glad you enjoyed your visit and hope to welcome you back soon.`} /></label><p className="admin-helper">Submitting closes this preview; no message is sent.</p></form>}
+    <StaffLocalized dictionary={growthDictionary} patterns={growthPatterns}>
+    <><aside className="detail-panel open admin-detail-panel"><header><div><Badge tone="purple">Campaign workspace</Badge><h2>{heading}</h2><p>{detail.kind === "campaign" ? `${campaign.type} • ${campaign.date}` : "Review and complete the next action."}</p></div><IconButton label="Close details" onClick={onClose}><X size={19} /></IconButton></header><div className="detail-body">
+      {detail.kind === "qr" && <div className="admin-qr-preview"><span><QrCode size={92} /></span><h3>Tell us how your visit went</h3><p>This QR opens a short mobile feedback form linked to the café, without exposing a customer’s private profile.</p><code>/feedback/table</code></div>}
+      {detail.kind === "campaign" && <div className="admin-form-stack"><div className="admin-summary-card"><Send size={20} /><span><strong>{campaign.audience}</strong><small>{campaign.reach} reached • {campaign.conversion} conversion</small></span><Badge tone={campaign.status === "Live" ? "green" : "blue"}>{campaign.status}</Badge></div><label><span>Channel</span><input value={translateStaffText(campaign.type, locale, growthDictionary, growthPatterns)} readOnly /></label><label><span>Scheduled date</span><input value={translateStaffText(campaign.date, locale, growthDictionary, growthPatterns)} readOnly /></label><p className="admin-helper">Sending requires a connected messaging provider and valid customer consent.</p></div>}
+      {detail.kind === "reply" && <form id="feedback-reply-demo" className="admin-form-stack" onSubmit={(event) => { event.preventDefault(); onClose(); }}><div className="admin-quote">“{detail.item.text}”</div><label><span>Your reply</span><textarea rows="5" defaultValue={locale === "fr" ? `Merci, ${detail.item.name.split(" ")[0]} ! Nous sommes ravis que votre visite vous ait plu et espérons vous revoir bientôt.` : `Thank you, ${detail.item.name.split(" ")[0]}! We’re glad you enjoyed your visit and hope to welcome you back soon.`} /></label><p className="admin-helper">Review this reply before sending it.</p></form>}
       {detail.kind === "reviews" && <div className="admin-review-list">{feedback.map((item) => <article key={item.name}><span>{"★".repeat(item.rating)}</span><strong>{item.name}</strong><p>{item.text}</p><small>{item.tag} • {item.time}</small></article>)}</div>}
       {detail.kind === "summary" && <div className="admin-insight-list"><article><Badge tone="green">Strong</Badge><div><strong>Service speed is the clearest advantage</strong><p>18 recent comments mentioned friendly, fast table service.</p></div></article><article><Badge tone="orange">Opportunity</Badge><div><strong>More single-origin choice</strong><p>Seven guests asked for a rotating filter-coffee option.</p></div></article><article><Badge tone="purple">Next step</Badge><div><strong>Test a weekend special</strong><p>Feature one single-origin brew and compare orders with a normal weekend.</p></div></article></div>}
-    </div><footer><Button variant="secondary" onClick={onClose}>Close</Button>{detail.kind === "campaign" && <Button icon={Edit3} onClick={onCampaign}>Open campaign builder</Button>}{detail.kind === "reply" && <Button icon={Send} type="submit" form="feedback-reply-demo">Preview reply</Button>}</footer></aside><button className="drawer-scrim" onClick={onClose} aria-label="Close marketing details" /></>
+    </div><footer><Button variant="secondary" onClick={onClose}>Close</Button>{detail.kind === "campaign" && <Button icon={Edit3} onClick={onCampaign}>Open campaign builder</Button>}{detail.kind === "reply" && <Button icon={Send} type="submit" form="feedback-reply-demo">Send reply</Button>}</footer></aside><button className="drawer-scrim" onClick={onClose} aria-label="Close marketing details" /></>
+    </StaffLocalized>
   );
 }
 
@@ -247,10 +579,12 @@ const salesTrend = [22, 28, 26, 34, 31, 40, 46, 43, 52, 49, 59, 63, 58, 70, 68, 
 const ordersTrend = [18, 23, 21, 29, 26, 33, 31, 38, 35, 43, 47, 44, 51, 49, 56, 61];
 
 export function InsightsView({ showToast }) {
+  const { locale } = useStaffLanguage();
   const [metric, setMetric] = useState("revenue");
   const [period, setPeriod] = useState("30 days");
   const series = metric === "revenue" ? salesTrend : ordersTrend;
   return (
+    <StaffLocalized dictionary={growthDictionary} patterns={growthPatterns}>
     <div className="view insights-view">
       <PageHeader eyebrow="Know what works" title="Insights" description="Clear answers about sales, guests, QR activity, and the hours that shape your day."
         actions={<><div className="period-select"><CalendarDays size={16} /><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Last 7 days</option><option>30 days</option><option>Quarter</option><option>This year</option></select><ChevronDown size={14} /></div><Button icon={FileSpreadsheet} onClick={() => showToast("CSV report prepared for download")}>Export report</Button></>}
@@ -284,15 +618,16 @@ export function InsightsView({ showToast }) {
           <div className="qr-sources"><div><span><i className="table" />Table ordering</span><strong>2,106</strong><Progress value={55} tone="blue" /></div><div><span><i className="menu" />Storefront menu</span><strong>984</strong><Progress value={26} tone="purple" /></div><div><span><i className="receipt" />Receipt loyalty</span><strong>518</strong><Progress value={13} tone="orange" /></div><div><span><i className="feedback" />Feedback</span><strong>234</strong><Progress value={6} tone="green" /></div></div>
         </Card>
         <Card className="product-performance span-7">
-          <SectionTitle title="Product performance" subtitle="Top items by revenue and momentum" action="Full report" onAction={() => showToast("Full product report opened in preview mode")} />
-          <div className="product-performance-table"><div className="performance-head"><span>Product</span><span>Units</span><span>Revenue</span><span>Trend</span></div>{menuItemsSeed.slice(0, 4).map((item, index) => <div className="performance-row" key={item.id}><span><span className={`item-pic ${item.tone}`}>{item.image ? <img src={item.image} alt="" style={{ objectPosition: item.objectPosition }} /> : item.emoji}</span><span><strong>{item.name}</strong><small>{item.category}</small></span></span><strong>{item.sales * 8}</strong><strong>{(item.sales * item.price * 8).toFixed(3)} TND</strong><MetricDelta>{index === 2 ? "↑ 5.4%" : `↑ ${18 - index * 3}.2%`}</MetricDelta></div>)}</div>
+          <SectionTitle title="Product performance" subtitle="Top items by revenue and momentum" action="Full report" onAction={() => showToast("Full product report opened")} />
+          <div className="product-performance-table"><div className="performance-head"><span>Product</span><span>Units</span><span>Revenue</span><span>Trend</span></div>{menuItemsSeed.slice(0, 4).map((item, index) => <div className="performance-row" key={item.id}><span><span className={`item-pic ${item.tone}`}>{item.image ? <img src={item.image} alt="" style={{ objectPosition: item.objectPosition }} /> : item.emoji}</span><span><strong>{locale === "fr" ? item.nameFr || item.name : item.name}</strong><small>{item.category}</small></span></span><strong>{item.sales * 8}</strong><strong>{(item.sales * item.price * 8).toFixed(3)} TND</strong><MetricDelta>{index === 2 ? "↑ 5.4%" : `↑ ${18 - index * 3}.2%`}</MetricDelta></div>)}</div>
         </Card>
         <Card className="ai-insights span-5">
-          <div className="ai-insights-head"><span className="ai-orb"><Sparkles size={22} /></span><div><Badge tone="purple">GREEN AI</Badge><h2>Three things worth knowing.</h2></div></div>
-          <ol><li><span>01</span><div><strong>Pistachio is your growth engine</strong><p>Signature items drive 31% of new-customer second visits.</p></div></li><li><span>02</span><div><strong>Thursday has room to grow</strong><p>A 15:00 happy hour could add an estimated 210 TND weekly.</p></div></li><li><span>03</span><div><strong>Football guests spend more</strong><p>Event-night order value is 22% above your average.</p></div></li></ol>
-          <button onClick={() => showToast("Green AI insight conversation opened in preview mode")}>Ask Green AI <ArrowRight size={15} /></button>
+          <div className="ai-insights-head"><span className="ai-orb"><Sparkles size={22} /></span><div><Badge tone="purple">GREEN ASSISTANT</Badge><h2>Three things worth knowing.</h2></div></div>
+          <ol><li><span>01</span><div><strong>Cold drinks bring guests back</strong><p>Iced coffee and fresh juices lead repeat afternoon visits.</p></div></li><li><span>02</span><div><strong>Thursday has room to grow</strong><p>A 15:00 happy hour could add an estimated 210 TND weekly.</p></div></li><li><span>03</span><div><strong>Football guests spend more</strong><p>Event-night order value is 22% above your average.</p></div></li></ol>
+          <button onClick={() => showToast("Green Assistant opened")}>Open assistant <ArrowRight size={15} /></button>
         </Card>
       </div>
     </div>
+    </StaffLocalized>
   );
 }

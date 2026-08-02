@@ -14,7 +14,7 @@ export function usePersistentState(key, initialValue) {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      // The demo still works if storage is disabled.
+      // The app remains usable if browser storage is disabled.
     }
   }, [key, value]);
 

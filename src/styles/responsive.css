@@ -41,7 +41,7 @@
   .quick-card { grid-template-columns: 1fr; }.quick-actions { grid-template-columns: repeat(2,1fr); }.quick-card > .icon-button { position: absolute; right: 16px; top: 16px; }
   .menu-summary-grid { grid-template-columns: 1fr 1fr; }.ai-menu-card { grid-column: 1/-1; }.menu-products { grid-template-columns: repeat(2,1fr); }
   .floor-summary { grid-template-columns: repeat(4,1fr); }.floor-summary .occupancy-total { grid-column: 1/-1; padding-top: 10px; border-top: 1px solid var(--line); }
-  .floor-workspace { grid-template-columns: 1fr; }.table-inspector { min-height: auto; }.floor-canvas { height: 530px; }
+  .floor-workspace { grid-template-columns: 1fr; }.table-inspector { min-height: auto; }.floor-canvas { height: auto; }.floor-canvas-zoom { min-width: 740px; }
   .customer-side-stack { grid-template-columns: 1fr 1fr; }.loyalty-program-card { grid-column: 1/-1; grid-row: auto; }
   .marketing-grid > * { grid-column: span 12; }.campaign-spotlight { min-height: 360px; }
   .insights-grid > * { grid-column: span 12 !important; }.sales-mix { min-height: 300px; }.mix-legend { max-width: 500px; margin: 0 auto; }
@@ -53,7 +53,8 @@
 
 @media (max-width: 720px) {
   .workspace-content { padding: 21px 13px 94px; }
-  .topbar { height: 61px; padding: 0 13px; }.top-search { min-height: 36px; }.top-search span { font-size: 0; }.top-search span::after { content: "Search…"; font-size: 9px; }.top-actions > .icon-button:first-child { display: none; }.preview-button { width: 36px; padding: 0; justify-content: center; }.preview-button span { display: none; }
+  .topbar { height: 61px; padding: 0 13px; }.top-search { min-height: 36px; }.top-search span { font-size: 0; }.top-search span::after { content: "Search…"; font-size: 9px; }.top-actions > .badge,.top-actions > .icon-button:not(.notification-button) { display: none; }.staff-language-switch button { min-width: 27px; min-height: 28px; padding-inline: 5px; }.preview-button { width: 36px; padding: 0; justify-content: center; }.preview-button span { display: none; }
+  html[lang="fr"] .top-search span::after { content: "Rechercher…"; }
   .mobile-bottom-nav { position: fixed; z-index: 38; inset: auto 0 0; height: 70px; padding: 6px 9px max(6px,env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(5,1fr); border-top: 1px solid var(--line); background: color-mix(in srgb,var(--card) 94%,transparent); backdrop-filter: blur(18px); }.mobile-bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--muted); cursor: pointer; background: none; font-size: 6px; font-weight: 800; }.mobile-bottom-nav button.active { color: var(--green); }.mobile-bottom-nav button.active svg { filter: drop-shadow(0 3px 8px color-mix(in srgb,var(--green) 35%,transparent)); }
   .page-header h1,.welcome-row h1 { font-size: 31px; }.page-actions .button,.welcome-actions .button { flex: 1; }
   .metrics-grid,.order-metrics,.reservation-overview,.customer-metrics,.marketing-metrics,.automation-stats,.experience-metrics,.insight-kpis { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -63,7 +64,7 @@
   .orders-toolbar { align-items: flex-start; flex-direction: column; }.orders-toolbar .segmented { max-width: 100%; overflow-x: auto; }.orders-toolbar-right { width: 100%; }.order-board { grid-template-columns: repeat(3,minmax(280px,82vw)); }
   .menu-summary-grid { grid-template-columns: 1fr; }.ai-menu-card { grid-column: auto; }.menu-toolbar { flex-wrap: wrap; }.menu-search { flex-basis: calc(100% - 50px); }.category-filter { flex: 1; }.menu-category-tabs { gap: 14px; }.menu-products { grid-template-columns: 1fr; }.menu-products.list .menu-product-card { grid-template-columns: 105px 1fr; }
   .reservation-request-list { grid-template-columns: 1fr; }.week-strip { min-width: 570px; }.calendar-card { overflow-x: auto; }.calendar-head,.calendar-agenda { min-width: 570px; }.reservation-bottom-grid { grid-template-columns: 1fr; }
-  .floor-summary { grid-template-columns: repeat(2,1fr); }.floor-summary > div:nth-child(2) { border: 0; }.zone-tabs { max-width: calc(100vw - 120px); overflow-x: auto; }.floor-canvas { min-width: 680px; }.floor-canvas-card { overflow-x: auto; }.shift-handover { grid-template-columns: auto 1fr; }.shift-handover > button { grid-column: 2; }
+  .floor-summary { grid-template-columns: repeat(2,1fr); }.floor-summary > div:nth-child(2) { border: 0; }.floor-toolbar { align-items: flex-start; flex-direction: column; }.zone-tabs { width: 100%; max-width: 100%; overflow-x: auto; }.floor-zoom-controls { align-self: flex-end; }.floor-canvas-zoom { min-width: 720px; }.floor-canvas-card { overflow: hidden; }.floor-canvas-scroll { padding: 10px; }.floor-map-legend { align-items: flex-start; flex-direction: column; gap: 9px; }.floor-legend-group + .floor-legend-group { padding: 9px 0 0; border-top: 1px solid var(--line); border-left: 0; }.shift-handover { grid-template-columns: auto 1fr; }.shift-handover > button { grid-column: 2; }
   .segment-grid { grid-template-columns: 1fr 1fr; }.customer-side-stack { grid-template-columns: 1fr; }.customer-directory { overflow-x: auto; }
   .campaign-table,.customer-table { margin: 0 -1px; }.feedback-card-head { flex-direction: column; }.review-ai-card { grid-template-columns: auto 1fr; }.review-ai-card > button { grid-column: 2; }
   .insight-kpis > .card { min-height: 105px; }.insight-chart-head { align-items: flex-start; flex-direction: column; }.heatmap-grid { gap: 3px; }
@@ -81,6 +82,7 @@
   .order-metrics > .card,.reservation-overview > .card,.customer-metrics > .card,.marketing-metrics > .card,.automation-stats > .card,.experience-metrics > .card { min-height: 90px; }
   .overview-orders article { grid-template-columns: auto 1fr auto; }.order-next { width: 28px; padding: 0; font-size: 0; }.order-next svg { margin: auto; }.event-card { grid-template-columns: 40% 60%; }.quick-card { min-height: 0; }
   .menu-health { grid-template-columns: auto 1fr; }.menu-toolbar > button,.layout-toggle { display: none; }.menu-search { flex-basis: 100%; }
+  .floor-summary { padding-inline: 12px; }.floor-summary > div { padding-right: 8px; }.floor-map-legend { padding: 10px 12px; }.floor-legend-group { gap: 7px 9px; }
   .segment-grid { grid-template-columns: 1fr; }.customer-side-stack { display: flex; }.campaign-row,.campaign-table-head { min-width: 650px; }
   .chart-summary strong,.big-chart-number strong { font-size: 14px; }.chart-legend { flex-wrap: wrap; }.mix-legend { grid-template-columns: 1fr; }
   .automation-rule-list article { min-height: 90px; }.recommendation-card,.chatbot-card { padding: 14px; }.game-covers article { aspect-ratio: .8; }.experience-collage { grid-template-columns: 1fr 1fr; grid-template-rows: 150px 110px; }.collage-card.football { grid-column: 1/-1; grid-row: auto; }

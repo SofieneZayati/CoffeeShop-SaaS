@@ -67,6 +67,7 @@
   linear-gradient(145deg,#12392a,#1f5840); }
 .customer-hero::after { content: "☕"; position: absolute; right: -10px; bottom: -20px; font-size: 112px; filter: grayscale(1) sepia(.2); opacity: .18; transform: rotate(-12deg); }
 .customer-nav { position: relative; z-index: 1; margin-bottom: 27px; display: flex; align-items: center; justify-content: space-between; }.customer-nav > span { display: flex; align-items: center; gap: 4px; font-size: 7px; font-weight: 800; }.customer-nav .brand-mark { color: #193b2d; }
+.preview-language-switch { padding: 3px; border-radius: 8px; background: rgba(255,255,255,.18); }.preview-language-switch button { width: 25px; height: 23px; border-radius: 6px; color: rgba(255,255,255,.72); cursor: pointer; background: transparent; font-size: 7px; font-weight: 900; }.preview-language-switch button.active { color: #173e2d; background: #d7f27d; }
 .customer-hero > .badge { position: relative; z-index: 1; }
 .customer-hero h2 { position: relative; z-index: 1; margin: 11px 0 6px; font-family: var(--serif); font-size: 34px; line-height: .9; font-weight: 400; letter-spacing: -.03em; }.customer-hero h2 em { color: var(--lime); font-weight: 400; }
 .customer-hero > p { position: relative; z-index: 1; width: 70%; margin-bottom: 16px; color: rgba(255,255,255,.68); font-size: 8px; line-height: 1.5; }

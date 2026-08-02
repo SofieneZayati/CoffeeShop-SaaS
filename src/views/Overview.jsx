@@ -20,6 +20,124 @@ import {
 } from "lucide-react";
 import { previousSeries, revenueSeries } from "../data/demoData";
 import { Avatar, Badge, Button, Card, MetricDelta, Progress, SectionTitle } from "../components/ui";
+import { StaffLocalized, useStaffLanguage } from "../context/StaffLanguageContext";
+
+const overviewDictionary = { fr: {
+  "Revenue trend for the last fourteen days": "Évolution du chiffre d’affaires sur les quatorze derniers jours",
+  "Jun 28": "28 juin",
+  "Jul 1": "1 juil.",
+  "Jul 4": "4 juil.",
+  "Jul 7": "7 juil.",
+  "Today": "Aujourd’hui",
+  "BAR & PICK-UP": "BAR ET RETRAIT",
+  "seats": "places",
+  "Available": "Disponible",
+  "Occupied": "Occupée",
+  "Reserved": "Réservée",
+  "Add menu item": "Ajouter à la carte",
+  "New reservation": "Nouvelle réservation",
+  "Create table QR": "Créer un QR de table",
+  "Send a campaign": "Envoyer une campagne",
+  "Your daily pulse": "Votre activité du jour",
+  "Good morning": "Bonjour",
+  "Good afternoon": "Bonjour",
+  "Good evening": "Bonsoir",
+  "The café is flowing nicely. Here’s what deserves your attention.": "Le café fonctionne bien. Voici les points qui méritent votre attention.",
+  "Create QR": "Créer un QR",
+  "Quick add": "Ajout rapide",
+  "Revenue today": "Chiffre d’affaires du jour",
+  "vs. 2,204.000 last Friday": "contre 2 204,000 vendredi dernier",
+  "Orders today": "Commandes du jour",
+  "8.4 min average prep time": "8,4 min de préparation moyenne",
+  "Open order board": "Ouvrir le tableau des commandes",
+  "Tables occupied": "Tables occupées",
+  "Healthy": "Bon rythme",
+  "Peak expected around 19:30": "Pic prévu vers 19 h 30",
+  "Table occupancy": "Occupation des tables",
+  "Loyalty members": "Membres fidélité",
+  "36 joined in the last 7 days": "36 inscriptions ces 7 derniers jours",
+  "Revenue flow": "Évolution du chiffre d’affaires",
+  "Daily net sales • last 14 days": "Ventes nettes quotidiennes • 14 derniers jours",
+  "This period": "Période actuelle",
+  "Previous": "Précédente",
+  "Today’s flow": "Service du jour",
+  "Live service health": "État du service en direct",
+  "Running smoothly": "Service fluide",
+  "Faster service than 82% of your recent Fridays.": "Service plus rapide que lors de 82 % de vos derniers vendredis.",
+  "Avg. preparation": "Préparation moyenne",
+  "Average order": "Panier moyen",
+  "Top performer": "Meilleure performance",
+  "Service insight": "Conseil de service",
+  "Schedule one extra barista from 19:00–21:00.": "Prévoyez un barista supplémentaire de 19 h à 21 h.",
+  "Live orders": "Commandes en direct",
+  "View order board": "Voir le tableau des commandes",
+  "New": "Nouvelle",
+  "Preparing": "En préparation",
+  "Ready": "Prête",
+  "Start": "Commencer",
+  "Floor pulse": "État de la salle",
+  "Open map": "Ouvrir le plan",
+  "Coming up": "À venir",
+  "Reservations & waitlist": "Réservations et liste d’attente",
+  "Calendar": "Calendrier",
+  "guests": "clients",
+  "Table unassigned": "Table non attribuée",
+  "1 party on waitlist": "1 groupe sur liste d’attente",
+  "Estimated wait • 18 minutes": "Attente estimée • 18 minutes",
+  "Best sellers": "Meilleures ventes",
+  "By units today": "Par quantité aujourd’hui",
+  "Menu": "Carte",
+  "Coffee": "Cafés",
+  "Iced coffee": "Café glacé",
+  "Cold drinks": "Boissons froides",
+  "Desserts": "Pâtisseries",
+  "Low stock": "Stock faible",
+  "Tiramisu has 7 portions left": "Il reste 7 portions de tiramisu",
+  "Review": "Vérifier",
+  "Next big event": "Prochain grand événement",
+  "Champions League final night.": "Soirée finale de la Ligue des champions.",
+  "46 of 60 seats already reserved": "46 places sur 60 déjà réservées",
+  "Event capacity": "Capacité de l’événement",
+  "Manage event": "Gérer l’événement",
+  "Move fast": "Gagner du temps",
+  "Your most-used actions, one click away.": "Vos actions les plus utilisées, accessibles en un clic.",
+  "Aya • 42 orders": "Aya • 42 commandes",
+  " Schedule one extra barista from 19:00–21:00.": " Prévoyez un barista supplémentaire de 19 h à 21 h.",
+  " seats": " places",
+  " guests": " clients",
+  " ago": "",
+  " • Tiramisu has 7 portions left": " • Il reste 7 portions de tiramisu",
+  "Champions League": "Ligue des champions",
+  "final night.": "soirée de la finale.",
+  "Iced coffee": "Café glacé",
+  "2× Iced coffee": "2× Café glacé",
+  "1× Tiramisu": "1× Tiramisu",
+  "1× Capucin": "1× Capucin",
+  "1× Cookie": "1× Cookie",
+  "2× Strawberry juice": "2× Jus de fraise",
+  "1× Cheesecake": "1× Cheesecake",
+  "1× Espresso": "1× Espresso",
+  "2× Capucin": "2× Capucin",
+  "1× Chocolate fondant": "1× Fondant au chocolat",
+  "1× Direct coffee": "1× Café direct",
+  "1× Croissant": "1× Croissant",
+} };
+
+const overviewPatterns = [
+  (text, locale) => {
+    if (locale !== "fr") return undefined;
+    const rules = [
+      [/^(\d+) tickets need the team$/, "$1 commandes à traiter"],
+      [/^(\d+) of (\d+) tables in service$/, "$1 tables sur $2 en service"],
+      [/^(\d+) guests • (.+)$/, "$1 clients • $2"],
+      [/^(.+) ago$/, "il y a $1"],
+      [/^(\d+) min$/, "il y a $1 min"],
+      [/^just now$/, "à l’instant"],
+    ];
+    for (const [pattern, replacement] of rules) if (pattern.test(text)) return text.replace(pattern, replacement);
+    return undefined;
+  },
+];
 
 function makeLine(values, width = 620, height = 180, padding = 10) {
   const max = Math.max(...values);
@@ -36,6 +154,7 @@ function RevenueChart() {
   const previous = makeLine(previousSeries);
   const area = `${line} L610,180 L10,180 Z`;
   return (
+    <StaffLocalized dictionary={overviewDictionary} patterns={overviewPatterns}>
     <div className="revenue-chart">
       <div className="chart-axis"><span>3k</span><span>2k</span><span>1k</span><span>0</span></div>
       <svg viewBox="0 0 620 180" preserveAspectRatio="none" aria-label="Revenue trend for the last fourteen days">
@@ -51,15 +170,26 @@ function RevenueChart() {
       </svg>
       <div className="chart-days"><span>Jun 28</span><span>Jul 1</span><span>Jul 4</span><span>Jul 7</span><span>Today</span></div>
     </div>
+    </StaffLocalized>
   );
 }
 
 const statusTone = { new: "blue", making: "orange", ready: "green" };
 const statusText = { new: "New", making: "Preparing", ready: "Ready" };
 
+function overviewOrderText(value, isFr) {
+  if (!isFr) return value;
+  return String(value)
+    .replace(/Iced coffee/g, "Café glacé")
+    .replace(/Strawberry juice/g, "Jus de fraise")
+    .replace(/Chocolate fondant/g, "Fondant au chocolat")
+    .replace(/Direct coffee/g, "Café direct");
+}
+
 function MiniFloor({ tables, onOpen }) {
   const visible = tables.slice(0, 8);
   return (
+    <StaffLocalized dictionary={overviewDictionary} patterns={overviewPatterns}>
     <div className="mini-floor">
       <div className="mini-floor-bar"><span>BAR & PICK-UP</span><i /><i /><i /></div>
       <div className="mini-floor-grid">
@@ -71,6 +201,7 @@ function MiniFloor({ tables, onOpen }) {
       </div>
       <div className="floor-legend"><span><i className="available" />Available</span><span><i className="occupied" />Occupied</span><span><i className="reserved" />Reserved</span></div>
     </div>
+    </StaffLocalized>
   );
 }
 
@@ -82,10 +213,13 @@ const quickActions = [
 ];
 
 export default function Overview({ orders, tables, reservations, onNavigate, onQuick, onAdvanceOrder, account }) {
+  const { locale } = useStaffLanguage();
+  const isFr = locale === "fr";
   const occupied = tables.filter((table) => ["occupied", "ordering"].includes(table.status)).length;
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   return (
+    <StaffLocalized dictionary={overviewDictionary} patterns={overviewPatterns}>
     <div className="view overview-view">
       <section className="welcome-row">
         <div>
@@ -106,9 +240,9 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
           <div className="metric-spark">{[30,38,34,48,44,57,52,69,63,74,68,82].map((n, i) => <i key={i} style={{ height: `${n}%` }} />)}</div>
         </Card>
         <Card className="metric-card">
-          <div className="metric-top"><span className="metric-icon blue"><ShoppingBag size={19} /></span><Badge tone="blue" dot>5 live</Badge></div>
+          <div className="metric-top"><span className="metric-icon blue"><ShoppingBag size={19} /></span><Badge tone="blue" dot>{isFr ? "5 en direct" : "5 live"}</Badge></div>
           <div><span className="metric-label">Orders today</span><strong>148</strong><p>8.4 min average prep time</p></div>
-          <button className="metric-link" onClick={() => onNavigate("orders")}>Open order board <ChevronRight size={14} /></button>
+          <button className="metric-link" onClick={() => onNavigate("orders")}>{isFr ? "Ouvrir le tableau des commandes" : "Open order board"} <ChevronRight size={14} /></button>
         </Card>
         <Card className="metric-card">
           <div className="metric-top"><span className="metric-icon purple"><Grid2X2 size={19} /></span><Badge tone="green" dot>Healthy</Badge></div>
@@ -140,7 +274,7 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
             <div><span><WalletCards size={15} />Average order</span><strong>16.800 TND</strong></div>
             <div><span><Trophy size={15} />Top performer</span><strong>Aya • 42 orders</strong></div>
           </div>
-          <div className="flow-callout"><Sparkles size={17} /><span><strong>AI note</strong> Schedule one extra barista from 19:00–21:00.</span></div>
+          <div className="flow-callout"><Sparkles size={17} /><span><strong>Service insight</strong> Schedule one extra barista from 19:00–21:00.</span></div>
         </Card>
 
         <Card className="orders-card span-7">
@@ -149,7 +283,7 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
             {orders.slice(0, 4).map((order, index) => (
               <article key={order.id}>
                 <span className={`order-sequence ${order.status}`}>{String(index + 1).padStart(2, "0")}</span>
-                <div className="overview-order-main"><div><strong>{order.table}</strong><Badge tone={statusTone[order.status]} dot>{statusText[order.status]}</Badge></div><p>{order.items.join(" • ")}</p></div>
+                <div className="overview-order-main"><div><strong>{order.table}</strong><Badge tone={statusTone[order.status]} dot>{statusText[order.status]}</Badge></div><p>{order.items.map((item) => overviewOrderText(item, isFr)).join(" • ")}</p></div>
                 <div className="overview-order-meta"><strong>{order.total.toFixed(3)} TND</strong><span>{order.time} ago</span></div>
                 {order.status !== "ready" ? <button className="order-next" onClick={() => onAdvanceOrder(order.id)}>{order.status === "new" ? "Start" : "Ready"}<ChevronRight size={14} /></button> : <span className="ready-check"><CheckCircle2 size={18} /></span>}
               </article>
@@ -168,7 +302,7 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
             {reservations.slice(0, 3).map((reservation, index) => (
               <article key={reservation.id}>
                 <time>{reservation.time}</time><span className={`timeline-node ${reservation.status}`} />
-                <div><strong>{reservation.name}</strong><p>{reservation.guests} guests • {reservation.table === "—" ? "Table unassigned" : reservation.table}</p></div>
+                <div><strong>{reservation.name}</strong><p>{reservation.guests} {isFr ? "clients" : "guests"} • {reservation.table === "—" ? "Table unassigned" : reservation.table}</p></div>
                 <Avatar initials={reservation.initials} size="xs" tone={index + 2} />
               </article>
             ))}
@@ -179,16 +313,16 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
         <Card className="bestsellers-card span-4">
           <SectionTitle title="Best sellers" subtitle="By units today" action="Menu" onAction={() => onNavigate("menu")} />
           <ol className="bestseller-list">
-            <li><b>1</b><span className="item-pic sage"><img src="/menu/pistachio-cloud.webp" alt="" /></span><span><strong>Pistachio cloud</strong><small>Signature</small></span><em>86</em></li>
-            <li><b>2</b><span className="item-pic sand"><img src="/menu/iced-caramel-latte.webp" alt="" /></span><span><strong>Iced caramel latte</strong><small>Cold coffee</small></span><em>74</em></li>
-            <li><b>3</b><span className="item-pic rose"><img src="/menu/tiramisu-jar.webp" alt="" /></span><span><strong>Tiramisu jar</strong><small>Dessert</small></span><em>56</em></li>
+            <li><b>1</b><span className="item-pic sage" aria-hidden="true">☕</span><span><strong>Espresso</strong><small>Coffee</small></span><em>92</em></li>
+            <li><b>2</b><span className="item-pic sand"><img src="/menu/iced-caramel-latte.webp" alt="" /></span><span><strong>Iced coffee</strong><small>Cold drinks</small></span><em>74</em></li>
+            <li><b>3</b><span className="item-pic rose"><img src="/menu/tiramisu-jar.webp" alt="" /></span><span><strong>Tiramisu</strong><small>Desserts</small></span><em>56</em></li>
           </ol>
           <div className="stock-warning"><Coffee size={16} /><span><strong>Low stock</strong> • Tiramisu has 7 portions left</span><button onClick={() => onNavigate("menu")}>Review</button></div>
         </Card>
 
         <Card className="event-card span-4">
-          <div className="event-visual"><span className="event-date"><b>08</b>AUG</span><span className="event-ball">⚽</span><i className="event-line one" /><i className="event-line two" /></div>
-          <div className="event-copy"><Badge tone="light">Next big event</Badge><h2>Champions League<br />final night.</h2><p>46 of 60 seats already reserved</p><Progress value={77} tone="lime" label="Event capacity" /><button onClick={() => onNavigate("experiences")}>Manage event <ArrowUpRight size={14} /></button></div>
+          <div className="event-visual"><span className="event-date"><b>08</b>{isFr ? "AOÛ" : "AUG"}</span><span className="event-ball">⚽</span><i className="event-line one" /><i className="event-line two" /></div>
+          <div className="event-copy"><Badge tone="light">Next big event</Badge><h2>Champions League<br />final night.</h2><p>46 of 60 seats already reserved</p><Progress value={77} tone="lime" label="Event capacity" /><button onClick={() => onNavigate("experiences")}>{isFr ? "Gérer l’événement" : "Manage event"} <ArrowUpRight size={14} /></button></div>
         </Card>
 
         <Card className="quick-card span-12">
@@ -199,5 +333,6 @@ export default function Overview({ orders, tables, reservations, onNavigate, onQ
         </Card>
       </section>
     </div>
+    </StaffLocalized>
   );
 }

@@ -1,6 +1,8 @@
 import { Check, ChevronRight, LoaderCircle } from "lucide-react";
+import { useStaffLanguage } from "../context/StaffLanguageContext";
 
 export function BrandMark({ compact = false }) {
+  const { t } = useStaffLanguage();
   return (
     <div className={`brand-lockup${compact ? " compact" : ""}`}>
       <span className="brand-mark">
@@ -9,7 +11,7 @@ export function BrandMark({ compact = false }) {
       {!compact && (
         <span className="brand-words">
           <strong>Green Coffee Games</strong>
-          <small>Interactive shop OS demo</small>
+          <small>{t("brand.subtitle", { en: "Coffee shop operating system", fr: "Système de gestion du café" })}</small>
         </span>
       )}
     </div>
